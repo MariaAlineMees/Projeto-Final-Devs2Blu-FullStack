@@ -80,7 +80,7 @@ Após a conclusão do comando, a aplicação estará no ar.
 | Serviço             | URL de Acesso                | Portas (Host:Container) | Credenciais (se aplicável)   |
 | :------------------ | :--------------------------- | :---------------------- | :---------------------------- |
 | **Aplicação (Front-end)** | `http://localhost`           | `80:80`                 | -                             |
-| **API de Roteiros** | `http://localhost:8080`      | `8080:8080`             | -                             |
+| **API de Roteiros** | Acessada via Front-end (`/api`) | `8080:8080`             | -                             |
 | **RabbitMQ (UI)**   | `http://localhost:15672`     | `15672:15672`           | `guest` / `guest`             |
 | **Banco de Dados**  | `localhost` (via cliente SQL) | `3307:3306`             | `root` / `sua_senha_secreta` |
 
