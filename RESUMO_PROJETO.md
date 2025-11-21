@@ -26,9 +26,9 @@ O objetivo é resolver um problema de organização: em vez de ter informações
         *   **Tecnologia:** Spring Boot com Java 17 e **Spring Security**.
         *   **Função:** Expõe a API REST principal, gerencia o CRUD de roteiros e, o mais importante, **controla toda a segurança da aplicação**, incluindo registro, login e autorização de usuários.
         *   **Papel na Mensageria:** Atua como **Produtor**.
-    *   **2. `sugestao-service` (O Serviço Secundário):**
-        *   **Tecnologia:** Spring Boot com Java 17.
-        *   **Função:** Sua única responsabilidade é "ouvir" mensagens. Ele simula uma tarefa secundária, como processar sugestões para um roteiro recém-criado.
+    *   **2. `email-service` (O Serviço de Notificação):**
+        *   **Tecnologia:** Spring Boot com Java 17 e Spring Mail.
+        *   **Função:** Sua única responsabilidade é "ouvir" mensagens de eventos (como registro de usuário e criação de roteiro) e enviar e-mails de notificação para o usuário.
         *   **Papel na Mensageria:** Atua como **Consumidor**.
 
 *   **Infraestrutura (A Base de Tudo):**
@@ -57,13 +57,19 @@ O objetivo é resolver um problema de organização: em vez de ter informações
 
 ### 4. Como funciona a mensageria com RabbitMQ neste projeto?
 
-**Resposta:** O fluxo de mensageria demonstra a comunicação assíncrona:
+**Resposta:** O projeto implementa dois fluxos de negócio com comunicação assíncrona:
 
-1.  **Ação:** Quando um usuário **autenticado** clica em "Salvar" no front-end, o Angular envia uma requisição `POST` para o `roteiro-service`.
-2.  **Produção:** O `roteiro-service` salva o novo roteiro no MySQL, associado ao usuário logado, e em seguida **publica uma mensagem em formato JSON** em uma fila no RabbitMQ.
-3.  **Consumo:** O `sugestao-service` consome a mensagem JSON, a converte de volta para um objeto Java e executa sua lógica (imprime um log para provar que recebeu a informação).
+1.  **E-mail de Boas-Vindas no Registro:**
+    *   **Ação:** Um novo usuário se registra através da interface.
+    *   **Produção:** O `roteiro-service` salva o usuário no MySQL e **publica uma mensagem** com os dados do usuário para a fila `user.registered.queue`.
+    *   **Consumo:** O `email-service` consome a mensagem e **envia um e-mail de boas-vindas** para o endereço de e-mail do novo usuário.
 
-A vantagem é que a resposta para o usuário é imediata, sem que ele precise esperar por processos secundários.
+2.  **E-mail de Confirmação de Roteiro:**
+    *   **Ação:** Um usuário autenticado cria um novo roteiro.
+    *   **Produção:** O `roteiro-service` salva o roteiro no MySQL e **publica uma mensagem** com os detalhes do roteiro para a fila `roteiro.criado.queue`.
+    *   **Consumo:** O `email-service` consome a mensagem e **envia um e-mail de confirmação** para o usuário.
+
+A vantagem é que a resposta para o usuário é imediata, sem que ele precise esperar pelo envio do e-mail.
 
 ---
 
@@ -81,7 +87,12 @@ A vantagem é que a resposta para o usuário é imediata, sem que ele precise es
     *   Modificar **toda a lógica de negócio** no back-end para garantir que um usuário só pudesse ver e modificar seus próprios roteiros.
     *   Criar os componentes de Login e Registro no front-end e um serviço (`AuthService`) para gerenciar o estado de autenticação.
 
-4.  **Resolução de Erros de Rede e CORS (O Desafio Final):** O maior desafio técnico foi a comunicação entre o front-end e o back-end. A solução definitiva foi implementar uma arquitetura padrão de produção:
+4.  **Implementação de Notificações Assíncronas:** Um dos principais requisitos foi a implementação de um fluxo de negócio real com mensageria. Isso foi alcançado com a criação do `email-service`, que permitiu:
+    *   Enviar e-mails de boas-vindas e de confirmação de forma desacoplada e assíncrona.
+    *   Integrar a aplicação com um serviço de SMTP real (SendGrid), configurando credenciais e remetentes verificados.
+    *   Garantir que a experiência do usuário seja rápida, pois ele não precisa esperar o envio do e-mail para continuar usando a aplicação.
+
+5.  **Resolução de Erros de Rede e CORS (O Desafio Final):** O maior desafio técnico foi a comunicação entre o front-end e o back-end. A solução definitiva foi implementar uma arquitetura padrão de produção:
     *   **Proxy Reverso:** Configuramos o **Nginx** para atuar como um **proxy reverso**. Agora, o front-end envia as requisições para si mesmo (em `/api/...`), e o Nginx redireciona essa chamada para o `roteiro-service` dentro da rede segura do Docker. Isso eliminou todos os erros de comunicação.
 
 Hoje, o sistema está 100% funcional, seguro, com o fluxo completo rodando de forma estável e integrada.

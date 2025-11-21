@@ -6,7 +6,7 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 | :------------------ | :------------------------------------------------------------------- |
 | **Nome do Projeto** | Planejador de Roteiros de Viagem                                     |
 | **Integrantes**     | Aline                                                                |
-| **Descrição**       | Uma plataforma para usuários criarem, gerenciarem e acompanharem seus planos de viagem, com um sistema de sugestões assíncrono. |
+| **Descrição**       | Uma plataforma para usuários criarem, gerenciarem e acompanharem seus planos de viagem, com um sistema de notificações assíncrono. |
 | **Público Alvo**    | Viajantes que desejam organizar suas futuras aventuras de forma simples e centralizada. |
 
 ---
@@ -29,15 +29,19 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 O sistema é composto por 3 serviços principais, um banco de dados e um broker de mensagens:
 
 -   `roteiro-front`: A aplicação Angular que o usuário acessa no navegador.
--   `roteiro-service`: Microsserviço Spring Boot responsável pelo CRUD de roteiros e pela **autenticação/autorização de usuários** com Spring Security.
--   `sugestao-service`: Microsserviço Spring Boot que "ouve" a criação de novos roteiros para processar sugestões.
+-   `roteiro-service`: Microsserviço Spring Boot responsável pelo CRUD de roteiros e pela **autenticação/autorização de usuários**.
+-   `email-service`: Microsserviço Spring Boot que "ouve" eventos (como criação de roteiro e registro de usuário) para **enviar e-mails de notificação**.
 
 O fluxo de dados ocorre da seguinte forma:
 
-1.  **Registro e Login:** O usuário cria uma conta e faz login através da interface. O `roteiro-service` valida as credenciais e cria uma sessão segura.
-2.  **Criação de Roteiro:** Com o login feito, o usuário cria um novo roteiro. A API do `roteiro-service` recebe a requisição, associa o roteiro ao usuário logado e salva no MySQL.
-3.  **Mensageria (RabbitMQ):** Após salvar, o `roteiro-service` **produz** uma mensagem para uma fila no RabbitMQ com os detalhes do roteiro criado.
-4.  **Processamento Assíncrono:** O `sugestao-service` **consome** a mensagem e simula um processamento (como buscar sugestões de atividades), imprimindo um log para confirmar o recebimento.
+1.  **Registro e E-mail de Boas-Vindas:**
+    *   O usuário cria uma conta com e-mail através da interface.
+    *   O `roteiro-service` salva o novo usuário e **produz** uma mensagem para a fila `user.registered.queue`.
+    *   O `email-service` **consome** a mensagem e envia um e-mail de boas-vindas para o usuário.
+2.  **Criação de Roteiro e E-mail de Confirmação:**
+    *   Com o login feito, o usuário cria um novo roteiro.
+    *   O `roteiro-service` salva o roteiro e **produz** uma mensagem para a fila `roteiro.criado.queue`.
+    *   O `email-service` **consome** a mensagem e envia um e-mail de confirmação para o e-mail do usuário associado ao roteiro.
 
 ---
 
@@ -49,27 +53,31 @@ Com a aplicação totalmente containerizada, o processo para rodar todo o ambien
 
 -   Docker e Docker Compose instalados e em execução.
 -   Git (para clonar o repositório).
--   Um editor de texto ou IDE para criar o arquivo de ambiente.
+-   Um editor de texto ou IDE.
 
-#### B. Passo 1: Configurar a Senha do Banco de Dados
+#### B. Passo 1: Configurar os Arquivos de Ambiente
 
-1.  Na pasta raiz do projeto (`/Projeto-final`), crie um arquivo chamado `.env`.
-2.  Adicione a seguinte variável dentro dele, substituindo `sua_senha_secreta` por uma senha de sua escolha:
+Antes de iniciar, você precisa configurar as credenciais do banco de dados e do serviço de e-mail.
 
-    ```sh
-    # Arquivo: .env
-    MYSQL_ROOT_PASSWORD=sua_senha_secreta
-    ```
+1.  **Configuração do `roteiro-service`:**
+    *   Navegue até `Back/roteiro-service/src/main/resources/`.
+    *   Renomeie o arquivo `application.properties.example` para `application.properties`.
+    *   Abra o novo `application.properties` e preencha a senha do MySQL.
+
+2.  **Configuração do `email-service`:**
+    *   Navegue até `Back/email-service/src/main/resources/`.
+    *   Renomeie o arquivo `application.properties.example` para `application.properties`.
+    *   Abra o novo `application.properties` e preencha as credenciais do seu serviço de e-mail (ex: SendGrid API Key).
 
 #### C. Passo 2: Compilar e Iniciar a Aplicação
 
-1.  Abra um terminal na pasta raiz do projeto (`/Projeto-final`).
-2.  Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano:
+1.  Abra um terminal na pasta raiz do projeto.
+2.  Execute o seguinte comando para construir as imagens e iniciar todos os contêineres:
 
     ```sh
-    docker-compose up --build -d
+    docker-compose up --build
     ```
-    *A flag `--build` garante que as imagens sejam (re)construídas caso haja alguma alteração no código. Na primeira vez, o processo pode demorar alguns minutos.*
+    *A flag `--build` garante que as imagens sejam (re)construídas. Na primeira vez, o processo pode demorar alguns minutos.*
 
 #### D. Passo 3: Utilizar a Aplicação
 
@@ -85,15 +93,37 @@ Após a conclusão do comando, a aplicação estará no ar.
 | **Aplicação (Front-end)** | `http://localhost`           | `80:80`                 | Criadas pelo usuário.         |
 | **API de Roteiros** | Acessada via Front-end (`/api`) | `8080:8080`             | Requer autenticação.          |
 | **RabbitMQ (UI)**   | `http://localhost:15672`     | `15672:15672`           | `guest` / `guest`             |
-| **Banco de Dados**  | `localhost` (via cliente SQL) | `3307:3306`             | `root` / `sua_senha_secreta` |
+| **Banco de Dados**  | `localhost` (via cliente SQL) | `3307:3306`             | `root` / (definida no `application.properties`) |
 
 ---
 
 ### 5. Para Parar a Aplicação
 
-Para parar e remover todos os contêineres, redes e volumes criados, execute o seguinte comando na raiz do projeto:
+Para parar e remover todos os contêineres e redes, execute o seguinte comando na raiz do projeto:
 
 ```sh
 docker-compose down
 ```
-*O volume do banco de dados (`mysql-data`) não será removido, garantindo a persistência dos dados.*
+*O volume do banco de dados (`mysql-data`) não será removido por padrão, garantindo a persistência dos dados. Para remover também os dados, use `docker-compose down --volumes`.*
+
+---
+
+### 6. Provas de Conceito e Melhorias Futuras
+
+Durante o desenvolvimento, foram exploradas funcionalidades adicionais que podem ser integradas futuramente para enriquecer a aplicação.
+
+#### a. Sugestões de Roteiro com Inteligência Artificial (Prova de Conceito)
+
+Foi desenvolvido um microsserviço `sugestao-service` (atualmente desativado no `docker-compose.yml`) que se comunica com um modelo de linguagem grande (LLM) local através do **Ollama**.
+
+-   **Fluxo:** O serviço é capaz de receber um tema de viagem (ex: "praias no nordeste") e usar o LLM para gerar sugestões de roteiro, retornando-as em formato JSON.
+-   **Status:** O serviço foi testado com sucesso via Postman, validando a comunicação com a IA.
+-   **Próximos Passos:**
+    1.  Integrar o `sugestao-service` ao `docker-compose.yml`.
+    2.  Criar um componente no front-end para que o usuário possa solicitar sugestões.
+    3.  Fazer o `roteiro-service` atuar como um gateway, recebendo a requisição do front-end e repassando-a para o `sugestao-service` via HTTP Client.
+
+#### b. Outras Melhorias
+
+-   **Testes Unitários e de Integração:** Expandir a cobertura de testes para garantir a robustez dos serviços.
+-   **Refinamento da Interface:** Melhorar a experiência do usuário (UX) e o design da interface (UI) no front-end.
