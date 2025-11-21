@@ -1,10 +1,12 @@
 package com.roteiro.roteiro_service.controller;
 
+import com.roteiro.roteiro_service.dtos.UserDTO; // Importar UserDTO
 import com.roteiro.roteiro_service.model.User;
 import com.roteiro.roteiro_service.service.AuthService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate; // Importar RabbitTemplate
+import org.springframework.beans.factory.annotation.Autowired; // Importar Autowired
+import org.springframework.beans.factory.annotation.Value; // Importar Value
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -15,6 +17,14 @@ public class AuthController {
 
     private final AuthService authService;
 
+    // --- INJEÇÃO DO RABBITTEMPLATE ---
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Value("${rabbitmq.queue.user.registered}")
+    private String userRegisteredQueue;
+    // --- FIM DA INJEÇÃO ---
+
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -23,6 +33,12 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
             User registeredUser = authService.register(user);
+
+            // --- ENVIAR MENSAGEM PARA A FILA ---
+            UserDTO userDTO = new UserDTO(registeredUser.getUsername(), registeredUser.getEmail());
+            rabbitTemplate.convertAndSend(userRegisteredQueue, userDTO);
+            // --- FIM DO ENVIO ---
+
             // Não retorne a senha no response
             registeredUser.setPassword(null); 
             return ResponseEntity.ok(registeredUser);
@@ -33,11 +49,9 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<String> getCurrentUser(Principal principal) {
-        // O Spring Security injeta o 'Principal' que contém os detalhes do usuário logado.
-        // O nome do principal é o username.
         if (principal != null) {
             return ResponseEntity.ok(principal.getName());
         }
-        return ResponseEntity.status(401).build(); // Não autorizado se ninguém estiver logado
+        return ResponseEntity.status(401).build();
     }
 }

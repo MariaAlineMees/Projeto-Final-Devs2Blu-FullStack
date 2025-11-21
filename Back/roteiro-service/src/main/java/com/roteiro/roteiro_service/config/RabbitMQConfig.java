@@ -1,14 +1,26 @@
 package com.roteiro.roteiro_service.config;
 
+import org.springframework.amqp.core.Queue; // Importar Queue
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value; // Importar Value
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+
+    // --- NOVA FILA PARA USUÁRIO REGISTRADO ---
+    @Value("${rabbitmq.queue.user.registered}")
+    private String userRegisteredQueue;
+
+    @Bean
+    public Queue userRegisteredQueue() {
+        return new Queue(userRegisteredQueue, true);
+    }
+    // --- FIM DA NOVA FILA ---
 
     @Bean
     public MessageConverter jsonMessageConverter() {
