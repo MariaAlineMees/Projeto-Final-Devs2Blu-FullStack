@@ -20,6 +20,11 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
 
+    // --- NOVO CAMPO ADICIONADO ---
+    @Column(unique = true, nullable = false)
+    private String email;
+    // --- FIM DO NOVO CAMPO ---
+
     @Column(nullable = false)
     private String password;
 

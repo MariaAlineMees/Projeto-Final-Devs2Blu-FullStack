@@ -14,6 +14,7 @@ import { AuthService } from '../services/auth';
 export class RegisterComponent {
   credentials = {
     username: '',
+    email: '', // Adicionado o campo de e-mail
     password: ''
   };
   errorMessage: string | null = null;

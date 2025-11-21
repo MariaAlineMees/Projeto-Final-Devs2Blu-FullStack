@@ -5,6 +5,12 @@
       <label for="username">Usuário:</label>
       <input type="text" id="username" name="username" [(ngModel)]="credentials.username" required>
     </div>
+    <!-- NOVO CAMPO DE E-MAIL ADICIONADO -->
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="credentials.email" required>
+    </div>
+    <!-- FIM DO NOVO CAMPO -->
     <div class="form-group">
       <label for="password">Senha:</label>
       <input type="password" id="password" name="password" [(ngModel)]="credentials.password" required>
