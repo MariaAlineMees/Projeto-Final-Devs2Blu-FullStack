@@ -1,10 +1,11 @@
 # Arquivos de ambiente com credenciais (CRUCIAL)
-.env
+**/application.properties
+**/.env
 
 # Arquivos de Build/Compilação do Back-end (Spring/Maven)
 /back/*/target/
 /back/*.jar
-/back/*/node_modules/ # Adicionei isso se houver node_modules aninhado
+/back/*/node_modules/
 
 # Arquivos de Build/Dependências do Front-end (Angular/npm)
 /front/node_modules/

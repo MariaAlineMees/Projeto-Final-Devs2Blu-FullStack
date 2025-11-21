@@ -31,8 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-**/application.properties
-**/application.yml
-
-# Arquivo de ambiente com credenciais

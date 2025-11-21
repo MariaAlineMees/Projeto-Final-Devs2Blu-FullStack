@@ -1,7 +1,10 @@
 package com.roteiro.roteiro_service.controller;
 
+import com.roteiro.roteiro_service.dtos.SuggestionRequest;
+import com.roteiro.roteiro_service.dtos.SuggestionResponse;
 import com.roteiro.roteiro_service.model.Roteiro;
 import com.roteiro.roteiro_service.service.RoteiroService;
+import com.roteiro.roteiro_service.service.SugestaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +15,11 @@ import java.util.List;
 public class RoteiroController {
 
     private final RoteiroService roteiroService;
+    private final SugestaoService sugestaoService;
 
-    public RoteiroController(RoteiroService roteiroService) {
+    public RoteiroController(RoteiroService roteiroService, SugestaoService sugestaoService) {
         this.roteiroService = roteiroService;
+        this.sugestaoService = sugestaoService;
     }
 
     @PostMapping
@@ -45,5 +50,11 @@ public class RoteiroController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Novo endpoint para obter sugestões
+    @PostMapping("/sugestao")
+    public SuggestionResponse obterSugestaoDeRoteiro(@RequestBody SuggestionRequest request) {
+        return sugestaoService.obterSugestao(request.getCountry());
     }
 }

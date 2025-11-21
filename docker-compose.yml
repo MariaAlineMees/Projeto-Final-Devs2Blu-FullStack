@@ -45,6 +45,10 @@ services:
     environment:
       DB_HOST: mysql-db
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
     ports:
       - "8080:8080"
     healthcheck:
@@ -61,11 +65,16 @@ services:
     networks:
       - roteiros-network
 
-  sugestao-service:
+  email-service:
     build:
-      context: ./Back/sugestao-service
+      context: ./Back/email-service
       dockerfile: Dockerfile
-    container_name: sugestao-service
+    container_name: email-service
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
     ports:
       - "8081:8081"
     depends_on:
@@ -73,6 +82,19 @@ services:
         condition: service_healthy
     networks:
       - roteiros-network
+
+  # sugestao-service: # Comentado temporariamente
+  #   build:
+  #     context: ./Back/sugestao-service
+  #     dockerfile: Dockerfile
+  #   container_name: sugestao-service
+  #   ports:
+  #     - "8082:8082"
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   networks:
+  #     - roteiros-network
 
   # Front-end Angular (Containerização)
   roteiro-front:
