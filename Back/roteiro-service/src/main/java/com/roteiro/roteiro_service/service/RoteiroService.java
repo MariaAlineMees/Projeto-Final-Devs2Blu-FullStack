@@ -43,7 +43,8 @@ public class RoteiroService {
             savedRoteiro.getDataInicio(),
             savedRoteiro.getDataFim(),
             savedRoteiro.getCustoEstimado(),
-            user.getEmail() // Adicionar o e-mail do usuário ao DTO
+            user.getEmail(),
+            user.getUsername() // Adicionado o nome do usuário
         );
 
         log.info("Sending RoteiroDTO to RabbitMQ: {}", roteiroDTO);
