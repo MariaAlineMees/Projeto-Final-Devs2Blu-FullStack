@@ -1,0 +1,14 @@
+spring.application.name=roteiro-service
+server.port=8080
+spring.datasource.url=jdbc:mysql://mysql-db:3306/roteiros_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+spring.datasource.username=root
+spring.datasource.password=SUA_SENHA_DO_MYSQL_AQUI
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Configurações do RabbitMQ
+spring.rabbitmq.host=rabbitmq
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest

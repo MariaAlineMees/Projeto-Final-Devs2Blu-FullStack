@@ -6,11 +6,15 @@ import com.roteiro.roteiro_service.repository.RoteiroRepository;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger; // Importar Logger
+import org.slf4j.LoggerFactory; // Importar LoggerFactory
 
 import java.util.List;
 
 @Service
 public class RoteiroService {
+
+    private static final Logger log = LoggerFactory.getLogger(RoteiroService.class); // Adicionar Logger
 
     private final RoteiroRepository roteiroRepository;
     private final RabbitTemplate rabbitTemplate;
@@ -29,6 +33,7 @@ public class RoteiroService {
         User user = getCurrentUser();
         roteiro.setUser(user); // Associa o roteiro ao usuário logado
         Roteiro savedRoteiro = roteiroRepository.save(roteiro);
+        log.info("Sending Roteiro created message to RabbitMQ: {}", savedRoteiro); // Adicionar log
         rabbitTemplate.convertAndSend("roteiro.criado.queue", savedRoteiro);
         return savedRoteiro;
     }

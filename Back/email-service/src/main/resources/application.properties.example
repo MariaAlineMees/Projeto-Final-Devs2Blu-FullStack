@@ -1,0 +1,17 @@
+spring.application.name=email-service
+server.port=8081
+
+# RabbitMQ Configuration
+spring.rabbitmq.host=rabbitmq
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+# Email Configuration (SMTP)
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=SEU_USERNAME_DO_MAILTRAP_AQUI
+spring.mail.password=SUA_SENHA_DO_MAILTRAP_AQUI
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
