@@ -1,0 +1,6 @@
+<div class="home-container">
+  <div class="welcome-message" *ngIf="username$ | async as username">
+    <h1>📸 Bem-vindo(a), {{ username }}!</h1>
+    <p>Qual será o seu próximo destino? 🗺️🧳</p>
+  </div>
+</div>

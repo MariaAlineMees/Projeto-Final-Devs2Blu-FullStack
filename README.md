@@ -47,53 +47,47 @@ O fluxo de dados ocorre da seguinte forma:
 
 ### 4. Como Rodar o Projeto Completo
 
-Com a aplicação totalmente containerizada, o processo para rodar todo o ambiente é simplificado.
+Com a aplicação totalmente containerizada, o processo para rodar todo o ambiente é muito simples.
 
 #### A. Pré-requisitos
 
 -   Docker e Docker Compose instalados e em execução.
 -   Git (para clonar o repositório).
--   Um editor de texto ou IDE.
 
-#### B. Passo 1: Configurar os Arquivos de Ambiente
+#### B. Passo 1: Configurar a Senha do Banco de Dados
 
-Antes de iniciar, você precisa configurar as credenciais do banco de dados e do serviço de e-mail.
+1.  Na pasta raiz do projeto, crie um arquivo chamado `.env`.
+2.  Dentro do arquivo `.env`, adicione a seguinte linha, substituindo `sua_senha_segura` por uma senha de sua escolha:
 
-1.  **Configuração do `roteiro-service`:**
-    *   Navegue até `Back/roteiro-service/src/main/resources/`.
-    *   Renomeie o arquivo `application.properties.example` para `application.properties`.
-    *   Abra o novo `application.properties` e preencha a senha do MySQL.
+    ```
+    MYSQL_ROOT_PASSWORD=sua_senha_segura
+    ```
 
-2.  **Configuração do `email-service`:**
-    *   Navegue até `Back/email-service/src/main/resources/`.
-    *   Renomeie o arquivo `application.properties.example` para `application.properties`.
-    *   Abra o novo `application.properties` e preencha as credenciais do seu serviço de e-mail (ex: SendGrid API Key).
-
-#### C. Passo 2: Compilar e Iniciar a Aplicação
+#### C. Passo 2: Iniciar a Aplicação
 
 1.  Abra um terminal na pasta raiz do projeto.
-2.  Execute o seguinte comando para construir as imagens e iniciar todos os contêineres:
+2.  Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano:
 
     ```sh
-    docker-compose up --build
+    docker compose up --build -d
     ```
-    *A flag `--build` garante que as imagens sejam (re)construídas. Na primeira vez, o processo pode demorar alguns minutos.*
+    *A flag `--build` garante que as imagens sejam (re)construídas com as últimas alterações. Na primeira vez, o processo pode demorar alguns minutos enquanto o Maven e o NPM baixam as dependências.*
 
 #### D. Passo 3: Utilizar a Aplicação
 
-Após a conclusão do comando, a aplicação estará no ar.
+Após a conclusão do comando, aguarde cerca de um minuto para que todos os serviços iniciem.
 
 1.  **Acesse a Aplicação:** Abra seu navegador e vá para `http://localhost`.
-2.  **Crie uma Conta:** Você será direcionado para a página de login. Clique no link "Não tem uma conta? Registre-se" e crie um novo usuário.
+2.  **Crie uma Conta:** Você será direcionado para a página de login. Clique no link para se registrar e crie um novo usuário.
 3.  **Faça Login:** Após o registro, faça login com as credenciais que você acabou de criar.
-4.  **Gerencie seus Roteiros:** Agora você pode criar, editar e deletar seus próprios roteiros de viagem.
+4.  **Gerencie seus Roteiros:** Agora você pode navegar entre a tela de boas-vindas, criar novos roteiros e listar os existentes usando a barra de navegação.
 
 | Serviço             | URL de Acesso                | Portas (Host:Container) | Credenciais (se aplicável)   |
 | :------------------ | :--------------------------- | :---------------------- | :---------------------------- |
 | **Aplicação (Front-end)** | `http://localhost`           | `80:80`                 | Criadas pelo usuário.         |
 | **API de Roteiros** | Acessada via Front-end (`/api`) | `8080:8080`             | Requer autenticação.          |
 | **RabbitMQ (UI)**   | `http://localhost:15672`     | `15672:15672`           | `guest` / `guest`             |
-| **Banco de Dados**  | `localhost` (via cliente SQL) | `3307:3306`             | `root` / (definida no `application.properties`) |
+| **Banco de Dados**  | `localhost` (via cliente SQL) | `3307:3306`             | `root` / (definida no `.env`) |
 
 ---
 

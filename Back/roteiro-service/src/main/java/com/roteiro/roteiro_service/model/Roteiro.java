@@ -20,6 +20,6 @@ public class Roteiro {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore // Evita que os detalhes do usuário sejam enviados de volta com o roteiro
+    @JsonIgnore
     private User user;
 }

@@ -15,7 +15,7 @@ public class SugestaoService {
     }
 
     public SuggestionResponse obterSugestao(String pais) {
-        String url = "http://localhost:8082/api/ai/suggestion"; // Endpoint correto do service-sugestao
+        String url = "http://localhost:8082/api/ai/suggestion";
         
         SuggestionRequest request = new SuggestionRequest(pais);
 

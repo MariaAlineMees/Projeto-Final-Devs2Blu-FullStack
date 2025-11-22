@@ -51,12 +51,12 @@ services:
       SPRING_RABBITMQ_PASSWORD: guest
     ports:
       - "8080:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
+    # healthcheck: # COMENTADO
+    #   test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"] # COMENTADO
+    #   interval: 30s # COMENTADO
+    #   timeout: 10s # COMENTADO
+    #   retries: 5 # COMENTADO
+    #   start_period: 30s # COMENTADO
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -108,8 +108,7 @@ services:
     ports:
       - "80:80" # Acessível via http://localhost
     depends_on:
-      roteiro-service:
-        condition: service_healthy
+      - roteiro-service # Removida a condição de serviço saudável
     networks:
       - roteiros-network
 

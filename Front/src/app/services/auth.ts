@@ -16,7 +16,7 @@ export class AuthService {
   private currentUsernameSubject = new BehaviorSubject<string | null>(null);
   public currentUsername$ = this.currentUsernameSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.verifyUserStatus();
   }
 
@@ -24,22 +24,27 @@ export class AuthService {
     this.fetchCurrentUser().subscribe();
   }
 
-  fetchCurrentUser(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/auth/me`, { responseType: 'text' }).pipe(
+  fetchCurrentUser(): Observable<string | null> { // Retorna string ou null
+    return this.http.get(`${this.apiUrl}/auth/me`, { withCredentials: true, responseType: 'text' }).pipe( // Adicionado withCredentials
       tap(username => {
         this.isAuthenticatedSubject.next(true);
         this.currentUsernameSubject.next(username);
       }),
-      catchError(() => {
-        this.isAuthenticatedSubject.next(false);
-        this.currentUsernameSubject.next(null);
-        return of(null);
+      catchError((error) => {
+        // Se o erro for 401, significa que não está autenticado
+        if (error.status === 401) {
+          this.isAuthenticatedSubject.next(false);
+          this.currentUsernameSubject.next(null);
+        }
+        // Para outros erros, podemos logar ou tratar de outra forma
+        console.error('Erro ao buscar usuário atual:', error);
+        return of(null); // Retorna null para indicar que não há usuário
       })
     );
   }
 
   register(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, credentials);
+    return this.http.post(`${this.apiUrl}/auth/register`, credentials, { withCredentials: true }); // Adicionado withCredentials
   }
 
   login(credentials: any): Observable<boolean> {
@@ -48,12 +53,17 @@ export class AuthService {
     });
     const body = `username=${encodeURIComponent(credentials.username)}&password=${encodeURIComponent(credentials.password)}`;
 
-    return this.http.post(`${this.apiUrl}/login`, body, { headers, responseType: 'text' }).pipe(
+    return this.http.post(`${this.apiUrl}/login`, body, { headers, withCredentials: true, responseType: 'text' }).pipe( // Adicionado withCredentials
       map(() => {
-        this.fetchCurrentUser().subscribe();
+        // Após o login, busca o usuário atual para atualizar o estado
+        this.fetchCurrentUser().subscribe({
+          next: () => this.router.navigate(['/home']), // ALTERADO: Navegar para /home após sucesso
+          error: () => this.router.navigate(['/login']) // Em caso de erro na busca, volta para login
+        });
         return true;
       }),
-      catchError(() => {
+      catchError((error) => {
+        console.error('Erro no login:', error);
         this.isAuthenticatedSubject.next(false);
         this.currentUsernameSubject.next(null);
         return of(false);
@@ -61,28 +71,39 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/logout`, {}).pipe(
+  logout(): void {
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe( // Adicionado withCredentials
       tap(() => {
         this.isAuthenticatedSubject.next(false);
         this.currentUsernameSubject.next(null);
+        this.router.navigate(['/login']);
+      }),
+      catchError((error) => {
+        console.error('Erro no logout:', error);
+        // Mesmo em caso de erro no backend, deslogar no front-end
+        this.isAuthenticatedSubject.next(false);
+        this.currentUsernameSubject.next(null);
+        this.router.navigate(['/login']);
+        return of(null);
       })
-    );
-  }
-
-  isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
+    ).subscribe();
   }
 }
 
-// Função de Guarda de Rota
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
-    return true;
-  } else {
-    return router.parseUrl('/login');
-  }
+  return authService.fetchCurrentUser().pipe(
+    map(user => {
+      if (user) {
+        return true;
+      } else {
+        return router.parseUrl('/login');
+      }
+    }),
+    catchError(() => {
+      return of(router.parseUrl('/login'));
+    })
+  );
 };

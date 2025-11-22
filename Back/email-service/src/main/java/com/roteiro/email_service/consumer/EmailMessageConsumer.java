@@ -20,11 +20,11 @@ public class EmailMessageConsumer {
         emailService.sendRoteiroConfirmationEmail(roteiroDTO);
     }
 
-    // --- NOVO MÉTODO PARA OUVIR A FILA DE REGISTRO ---
+    // --- MÉTODO PARA OUVIR A FILA DE REGISTRO ---
     @RabbitListener(queues = "${rabbitmq.queue.user.registered}")
     public void receiveUserRegisteredMessage(UserDTO userDTO) {
         System.out.println("Received UserDTO from user.registered.queue: " + userDTO);
         emailService.sendWelcomeEmail(userDTO);
     }
-    // --- FIM DO NOVO MÉTODO ---
+
 }

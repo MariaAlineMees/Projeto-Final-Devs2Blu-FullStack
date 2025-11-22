@@ -1,21 +1,22 @@
-# Front/Dockerfile
-
-# Estágio 1: Build - Compila o projeto Angular
+# --- STAGE 1: Build da Aplicação Angular ---
 FROM node:20-alpine AS build
 
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia package.json do projeto Angular que está na pasta Front/
+# Copia os arquivos package.json e package-lock.json
 COPY package.json package-lock.json ./
+
+# Instala as dependências do Node.js
 RUN npm install
 
-# Copia o restante do código do Front-end Angular
+# Copia todo o código fonte da aplicação
 COPY . .
 
-# Compila o projeto Angular com o padrão
+# Compila o projeto Angular com o padrão (usando o script do package.json)
 RUN npm run build
 
-# Estágio 2: Serve - Cria a imagem final com Nginx
+# --- STAGE 2: Servir a Aplicação com Nginx ---
 FROM nginx:alpine
 
 # Copia o arquivo de configuração do Nginx

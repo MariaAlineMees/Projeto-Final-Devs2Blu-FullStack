@@ -1,1 +1,111 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globais do Angular Material (mantidos) */
+html, body {
+  height: 100%;
+  margin: 0; /* Garante que não haja margens padrão */
+  display: flex;
+  flex-direction: column; /* Organiza os filhos (mat-toolbar, main, footer) verticalmente */
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /* Removendo overflow: hidden do body para permitir scroll se o conteúdo for maior que a tela */
+  overflow-x: hidden; /* Permite scroll vertical, mas evita horizontal indesejado */
+}
+
+/* Estilos base para o body, que serão sobrescritos pelas classes específicas */
+body {
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #333; /* Cor do texto padrão */
+  /* height: 100%; já definido no html, body */
+}
+
+/* Ajustes para o layout principal */
+main {
+  flex-grow: 1; /* Faz o conteúdo principal ocupar todo o espaço disponível */
+  display: flex; /* Permite que o conteúdo dentro de main também use flexbox */
+  flex-direction: column;
+  padding-bottom: 20px; /* Ajuste este valor para a nova altura da toolbar */
+  margin-top: 1rem; /* AJUSTADO: Espaçamento de 16px entre a toolbar e o conteúdo principal */
+  padding-top: 0 !important; /* ADICIONADO: Remove o padding-top de 20px que estava sendo aplicado */
+}
+
+/* Estilos para o rodapé */
+footer {
+  background-color: #3f51b5; /* Cor de fundo do rodapé */
+  color: white; /* Cor do texto do rodapé */
+  text-align: center;
+  padding: 15px 0;
+  position: relative; /* Alterado de fixed para relative para funcionar com flexbox no body */
+  width: 100%; /* Ocupa toda a largura */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+  z-index: 1000; /* Garante que o rodapé fique acima de outros elementos */
+  margin-top: auto; /* Empurra o rodapé para o final do flex container */
+}
+
+/* Estilos para a barra de navegação superior (mat-toolbar) */
+mat-toolbar {
+  background-color: #3f51b5 !important; /* Cor do rodapé para consistência */
+  min-height: 20px; /* Nova altura desejada */
+  height: 20px; /* Garante que a altura seja fixa */
+  padding: 0 16px; /* Ajusta o padding interno se necessário */
+}
+
+mat-toolbar span {
+  color: white; /* Garante que o texto dentro da toolbar seja branco */
+}
+
+mat-toolbar button {
+  color: white !important; /* Garante que os botões dentro da toolbar sejam brancos */
+}
+
+
+/* --- MUDANÇA: Ajustar estilos de fundo --- */
+
+/* Classes de fundo específicas por página */
+.background-register, .background-login, .background-roteiro {
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  height: 100%;
+}
+
+.background-register {
+  background-image: url('assets/images/background.jpg');
+}
+.background-login {
+  background-image: url('assets/images/background2.jpg');
+}
+.background-roteiro {
+  background-image: url('assets/images/background3.jpg');
+}
+
+/* ADICIONADO */
+.background-roteiro-form {
+  background-image: url('assets/images/background6.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+.background-roteiro-list {
+  background-image: url('assets/images/background7.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Efeito de "vidro fosco" para os cards e formulários */
+.auth-card, .form-container, .roteiro-card, .empty-state, mat-tab-group {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* Ajuste fino para o card de autenticação */
+.auth-card {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+/* --- FIM DA MUDANÇA --- */

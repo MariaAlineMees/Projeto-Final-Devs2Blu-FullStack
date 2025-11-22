@@ -1,0 +1,29 @@
+<div class="form-container">
+  <h2>{{ isEditing ? 'Editar Roteiro' : 'Novo Roteiro' }}</h2>
+  <form (ngSubmit)="salvarRoteiro()" class="roteiro-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Título</mat-label>
+      <input matInput type="text" name="titulo" [(ngModel)]="novoRoteiro.titulo" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Destino</mat-label>
+      <input matInput type="text" name="destino" [(ngModel)]="novoRoteiro.destino" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Data de Início</mat-label>
+      <input matInput type="date" name="dataInicio" [(ngModel)]="novoRoteiro.dataInicio" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Data de Fim</mat-label>
+      <input matInput type="date" name="dataFim" [(ngModel)]="novoRoteiro.dataFim" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Custo Estimado</mat-label>
+      <input matInput type="number" name="custoEstimado" [(ngModel)]="novoRoteiro.custoEstimado" required>
+    </mat-form-field>
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit">{{ isEditing ? 'Atualizar' : 'Salvar' }}</button>
+      <button mat-stroked-button type="button" (click)="resetForm()" *ngIf="isEditing">Cancelar</button>
+    </div>
+  </form>
+</div>

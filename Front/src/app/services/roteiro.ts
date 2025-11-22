@@ -19,19 +19,26 @@ export class RoteiroService {
 
   constructor(private http: HttpClient) { }
 
-  getRoteiros(): Observable<Roteiro[]> {
-    return this.http.get<Roteiro[]>(this.apiUrl);
+  // CORRIGIDO: Renomeado de getRoteiros para listarRoteiros para consistência
+  listarRoteiros(): Observable<Roteiro[]> {
+    return this.http.get<Roteiro[]>(this.apiUrl, { withCredentials: true });
+  }
+
+  // ADICIONADO: Método que faltava para buscar um roteiro por ID
+  buscarRoteiroPorId(id: number): Observable<Roteiro> {
+    return this.http.get<Roteiro>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 
   criarRoteiro(roteiro: Roteiro): Observable<Roteiro> {
-    return this.http.post<Roteiro>(this.apiUrl, roteiro);
+    return this.http.post<Roteiro>(this.apiUrl, roteiro, { withCredentials: true });
   }
 
-  atualizarRoteiro(roteiro: Roteiro): Observable<Roteiro> {
-    return this.http.put<Roteiro>(`${this.apiUrl}/${roteiro.id}`, roteiro);
+  // CORRIGIDO: Agora aceita id e roteiro, como o novo RoteiroFormComponent espera
+  atualizarRoteiro(id: number, roteiro: Roteiro): Observable<Roteiro> {
+    return this.http.put<Roteiro>(`${this.apiUrl}/${id}`, roteiro, { withCredentials: true });
   }
 
   deletarRoteiro(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 }

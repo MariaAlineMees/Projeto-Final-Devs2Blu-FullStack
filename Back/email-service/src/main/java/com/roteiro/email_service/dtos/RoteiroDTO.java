@@ -17,5 +17,5 @@ public class RoteiroDTO implements Serializable {
     private String dataFim;
     private double custoEstimado;
     private String userEmail;
-    private String username; // Adicionado nome do usuário
+    private String username;
 }

@@ -1,0 +1,22 @@
+<div class="list-container">
+  <h2>Meus Roteiros</h2>
+  <div *ngIf="roteiros.length === 0" class="empty-state">
+    <p>Você ainda não tem roteiros cadastrados.</p>
+  </div>
+  <div class="roteiro-grid" *ngIf="roteiros.length > 0">
+    <mat-card *ngFor="let roteiro of roteiros" class="roteiro-card">
+      <mat-card-header>
+        <mat-card-title>{{ roteiro.titulo }}</mat-card-title>
+        <mat-card-subtitle>{{ roteiro.destino }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Período:</strong> {{ roteiro.dataInicio | date:'dd/MM/yyyy' }} - {{ roteiro.dataFim | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Custo:</strong> {{ roteiro.custoEstimado | currency:'BRL' }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="editarRoteiro(roteiro.id!)">EDITAR</button>
+        <button mat-button color="warn" (click)="deletarRoteiro(roteiro.id!)">DELETAR</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

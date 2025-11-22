@@ -20,19 +20,19 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
 
-    // --- NOVO CAMPO ADICIONADO ---
+
     @Column(unique = true, nullable = false)
     private String email;
-    // --- FIM DO NOVO CAMPO ---
+
 
     @Column(nullable = false)
     private String password;
 
-    // --- Métodos da interface UserDetails ---
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Adicionar papéis mais tarde (ex: ROLE_USER, ROLE_ADMIN).
+
         return Collections.emptyList();
     }
 

@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface RoteiroRepository extends JpaRepository<Roteiro, Long> {
 
-    // Encontra todos os roteiros que pertencem a um usuário específico
+
     List<Roteiro> findByUser(User user);
 
-    // Encontra um roteiro específico pelo seu ID e pelo seu dono (usuário)
+
     Optional<Roteiro> findByIdAndUser(Long id, User user);
 }

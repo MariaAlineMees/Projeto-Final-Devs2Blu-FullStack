@@ -44,7 +44,7 @@ public class EmailService {
         System.out.println("E-mail de confirmação de roteiro enviado para: " + roteiroDTO.getUserEmail());
     }
 
-    // --- NOVO MÉTODO PARA E-MAIL DE BOAS-VINDAS ---
+    // --- MÉTODO PARA E-MAIL DE BOAS-VINDAS ---
     public void sendWelcomeEmail(UserDTO userDTO) {
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -64,5 +64,5 @@ public class EmailService {
         mailSender.send(message);
         System.out.println("E-mail de boas-vindas enviado para: " + userDTO.getEmail());
     }
-    // --- FIM DO NOVO MÉTODO ---
+
 }

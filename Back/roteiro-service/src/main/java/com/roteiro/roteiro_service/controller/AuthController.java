@@ -17,13 +17,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // --- INJEÇÃO DO RABBITTEMPLATE ---
+
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Value("${rabbitmq.queue.user.registered}")
     private String userRegisteredQueue;
-    // --- FIM DA INJEÇÃO ---
+
 
     public AuthController(AuthService authService) {
         this.authService = authService;
@@ -37,7 +37,7 @@ public class AuthController {
             // --- ENVIAR MENSAGEM PARA A FILA ---
             UserDTO userDTO = new UserDTO(registeredUser.getUsername(), registeredUser.getEmail());
             rabbitTemplate.convertAndSend(userRegisteredQueue, userDTO);
-            // --- FIM DO ENVIO ---
+
 
             // Não retorne a senha no response
             registeredUser.setPassword(null); 

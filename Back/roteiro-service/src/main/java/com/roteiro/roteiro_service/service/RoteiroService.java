@@ -1,81 +1,55 @@
 package com.roteiro.roteiro_service.service;
 
-import com.roteiro.roteiro_service.dtos.RoteiroDTO; // Importar o DTO
 import com.roteiro.roteiro_service.model.Roteiro;
 import com.roteiro.roteiro_service.model.User;
 import com.roteiro.roteiro_service.repository.RoteiroRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.roteiro.roteiro_service.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Service
 public class RoteiroService {
 
-    private static final Logger log = LoggerFactory.getLogger(RoteiroService.class);
+    @Autowired
+    private RoteiroRepository roteiroRepository;
 
-    private final RoteiroRepository roteiroRepository;
-    private final RabbitTemplate rabbitTemplate;
+    @Autowired
+    private UserRepository userRepository; // Adicionado
 
-    public RoteiroService(RoteiroRepository roteiroRepository, RabbitTemplate rabbitTemplate) {
-        this.roteiroRepository = roteiroRepository;
-        this.rabbitTemplate = rabbitTemplate;
+    public Roteiro save(Roteiro roteiro) {
+        // Obtém o nome de usuário do contexto de segurança
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        // Busca o usuário no banco de dados
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        // Associa o usuário ao roteiro
+        roteiro.setUser(user);
+        return roteiroRepository.save(roteiro);
     }
 
     public List<Roteiro> findAll() {
-        User user = getCurrentUser();
-        return roteiroRepository.findByUser(user);
+        return roteiroRepository.findAll();
     }
 
-    public Roteiro save(Roteiro roteiro) {
-        User user = getCurrentUser();
-        roteiro.setUser(user); // Associa o roteiro ao usuário logado
-        Roteiro savedRoteiro = roteiroRepository.save(roteiro);
-
-        // --- MUDANÇA: Criar e enviar o DTO ---
-        RoteiroDTO roteiroDTO = new RoteiroDTO(
-            savedRoteiro.getId(),
-            savedRoteiro.getTitulo(),
-            savedRoteiro.getDestino(),
-            savedRoteiro.getDataInicio(),
-            savedRoteiro.getDataFim(),
-            savedRoteiro.getCustoEstimado(),
-            user.getEmail(),
-            user.getUsername() // Adicionado o nome do usuário
-        );
-
-        log.info("Sending RoteiroDTO to RabbitMQ: {}", roteiroDTO);
-        rabbitTemplate.convertAndSend("roteiro.criado.queue", roteiroDTO);
-        // --- FIM DA MUDANÇA ---
-
-        return savedRoteiro;
+    public Roteiro findById(Long id) {
+        return roteiroRepository.findById(id).orElseThrow(() -> new RuntimeException("Roteiro não encontrado"));
     }
 
     public Roteiro update(Long id, Roteiro roteiroDetails) {
-        User user = getCurrentUser();
-        return roteiroRepository.findByIdAndUser(id, user)
-                .map(roteiro -> {
-                    roteiro.setTitulo(roteiroDetails.getTitulo());
-                    roteiro.setDestino(roteiroDetails.getDestino());
-                    roteiro.setDataInicio(roteiroDetails.getDataInicio());
-                    roteiro.setDataFim(roteiroDetails.getDataFim());
-                    roteiro.setCustoEstimado(roteiroDetails.getCustoEstimado());
-                    return roteiroRepository.save(roteiro);
-                }).orElseThrow(() -> new RuntimeException("Roteiro não encontrado ou não pertence ao usuário"));
+        Roteiro roteiro = findById(id);
+        roteiro.setTitulo(roteiroDetails.getTitulo());
+        roteiro.setDestino(roteiroDetails.getDestino());
+        roteiro.setDataInicio(roteiroDetails.getDataInicio());
+        roteiro.setDataFim(roteiroDetails.getDataFim());
+        roteiro.setCustoEstimado(roteiroDetails.getCustoEstimado());
+        return roteiroRepository.save(roteiro);
     }
 
     public void delete(Long id) {
-        User user = getCurrentUser();
-        Roteiro roteiro = roteiroRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Roteiro não encontrado ou não pertence ao usuário"));
+        Roteiro roteiro = findById(id);
         roteiroRepository.delete(roteiro);
-    }
-
-    private User getCurrentUser() {
-        // Pega o usuário autenticado do contexto de segurança do Spring
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

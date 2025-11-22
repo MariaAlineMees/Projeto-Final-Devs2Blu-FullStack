@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core'; // 1. Importar HostBinding
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
+import { MaterialModule } from '../material/material-module';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MaterialModule
+  ],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
 export class RegisterComponent {
+  // --- MUDANÇA: Adicionar classe de fundo ao host ---
+  @HostBinding('class') class = 'background-register'; // 2. Aplicar a classe
+
   credentials = {
     username: '',
-    email: '', // Adicionado o campo de e-mail
+    email: '',
     password: ''
   };
   errorMessage: string | null = null;
@@ -24,7 +32,6 @@ export class RegisterComponent {
   register(): void {
     this.authService.register(this.credentials).subscribe({
       next: () => {
-        // Redireciona para a página de login após o registro bem-sucedido
         this.router.navigate(['/login']);
       },
       error: (err) => {

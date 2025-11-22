@@ -1,20 +1,34 @@
-// src/app/app.ts (Seu Componente Raiz)
-
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router'; // 1. Importar RouterModule
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AuthService } from './services/auth';
+import { MaterialModule } from './material/material-module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  template: `
-    <header><h1>Planejador de Viagens 🌍✈️🚗🚆🚢</h1></header>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-  `,
+  imports: [
+    RouterOutlet,
+    RouterModule, // 2. Adicionar RouterModule aqui
+    CommonModule,
+    HttpClientModule,
+    MaterialModule
+  ],
+  providers: [AuthService],
+  templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   title = 'roteiro-front';
+  currentYear: number;
+
+  constructor(public authService: AuthService) {
+    this.currentYear = new Date().getFullYear();
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }

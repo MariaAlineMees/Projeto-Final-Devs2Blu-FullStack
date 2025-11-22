@@ -32,6 +32,16 @@ public class RoteiroController {
         return roteiroService.findAll();
     }
 
+    @GetMapping("/{id}") // ADICIONADO: Endpoint para buscar um roteiro por ID
+    public ResponseEntity<Roteiro> buscarRoteiroPorId(@PathVariable Long id) {
+        try {
+            Roteiro roteiro = roteiroService.findById(id);
+            return ResponseEntity.ok(roteiro);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Roteiro> atualizarRoteiro(@PathVariable Long id, @RequestBody Roteiro roteiroDetails) {
         try {

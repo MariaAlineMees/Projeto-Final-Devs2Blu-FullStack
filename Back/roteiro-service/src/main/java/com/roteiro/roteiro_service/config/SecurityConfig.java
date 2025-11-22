@@ -3,6 +3,7 @@ package com.roteiro.roteiro_service.config;
 import com.roteiro.roteiro_service.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus; // Importar HttpStatus
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint; // Importar HttpStatusEntryPoint
 
 @Configuration
 @EnableWebSecurity
@@ -29,19 +31,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            // --- MUDANÇA: Adicionar tratamento de exceção para retornar 401 ---
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+            )
+            // --- FIM DA MUDANÇA ---
             .authorizeHttpRequests(auth -> auth
-                // Endpoints públicos não precisam de autenticação
                 .requestMatchers("/actuator/**", "/api/auth/register").permitAll()
-                // Todas as outras requisições precisam de autenticação
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                // Define a URL que processará a submissão do formulário de login
                 .loginProcessingUrl("/api/login")
                 .permitAll()
             )
             .logout(logout -> logout
-                // Define a URL que acionará o logout
                 .logoutUrl("/api/logout")
             );
 

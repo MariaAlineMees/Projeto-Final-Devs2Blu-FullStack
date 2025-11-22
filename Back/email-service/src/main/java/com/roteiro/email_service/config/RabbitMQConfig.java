@@ -20,7 +20,7 @@ public class RabbitMQConfig {
         return new Queue(ROTEIRO_CRIADO_QUEUE, true);
     }
 
-    // --- NOVA FILA PARA USUÁRIO REGISTRADO ---
+    // --- FILA PARA USUÁRIO REGISTRADO ---
     @Value("${rabbitmq.queue.user.registered}")
     private String userRegisteredQueue;
 
