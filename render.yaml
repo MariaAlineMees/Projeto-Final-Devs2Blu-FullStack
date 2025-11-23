@@ -1,6 +1,6 @@
 services:
   # 1. RabbitMQ como um serviço privado
-  - type: private
+  - type: privatesvc # CORRIGIDO: O tipo correto é 'privatesvc'
     name: rabbitmq
     runtime: docker
     dockerImage: rabbitmq:3-management-alpine
@@ -12,14 +12,14 @@ services:
     dockerfilePath: ./Back/roteiro-service/Dockerfile
     healthCheck:
       path: /actuator/health
-      initialDelaySeconds: 120 # Aumenta o tempo de espera para o Java iniciar
+      initialDelaySeconds: 120
     envVars:
       # A URL do banco de dados será adicionada manualmente no painel do Render
       - key: SPRING_DATASOURCE_URL
         value: "COLE_A_URL_DO_BANCO_DE_DADOS_AQUI"
       - key: SPRING_RABBITMQ_HOST
         fromService:
-          type: private
+          type: privatesvc # CORRIGIDO
           name: rabbitmq
           property: host
 
@@ -31,7 +31,7 @@ services:
     envVars:
       - key: SPRING_RABBITMQ_HOST
         fromService:
-          type: private
+          type: privatesvc # CORRIGIDO
           name: rabbitmq
           property: host
 
