@@ -1,0 +1,91 @@
+services:
+  # Banco de Dados PostgreSQL
+  - name: meu-roteiro-db
+    type: pserv
+    plan: free
+    postgres:
+      version: "15"
+
+  # RabbitMQ
+  - name: rabbitmq
+    type: pserv
+    plan: free
+    image:
+      url: docker.io/library/rabbitmq:3-management-alpine
+
+  # Backend: Roteiro Service
+  - name: roteiro-service
+    type: web
+    plan: free
+    env: docker
+    dockerfilePath: ./Back/roteiro-service/Dockerfile
+    dockerContext: ./Back/roteiro-service
+    envVars:
+      - fromDatabase:
+          name: meu-roteiro-db
+          property: connectionString
+        key: SPRING_DATASOURCE_URL
+      - fromService:
+          name: rabbitmq
+          property: host
+        key: SPRING_RABBITMQ_HOST
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: meu-roteiro-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: meu-roteiro-db
+          property: password
+      - key: rabbitmq.queue.user.registered
+        value: user.registered.queue
+      - key: rabbitmq.queue.roteiro.criado
+        value: roteiro.criado.queue
+
+  # Backend: Email Service
+  - name: email-service
+    type: web
+    plan: free
+    env: docker
+    dockerfilePath: ./Back/email-service/Dockerfile
+    dockerContext: ./Back/email-service
+    envVars:
+      - fromService:
+          name: rabbitmq
+          property: host
+        key: SPRING_RABBITMQ_HOST
+      - key: SPRING_MAIL_HOST
+        value: smtp.sendgrid.net
+      - key: SPRING_MAIL_PORT
+        value: 587
+      - key: SPRING_MAIL_USERNAME
+        value: apikey
+      - key: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
+        value: "true"
+      - key: SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE
+        value: "true"
+      - key: rabbitmq.queue.user.registered
+        value: user.registered.queue
+      - key: rabbitmq.queue.roteiro.criado
+        value: roteiro.criado.queue
+      # A CHAVE SECRETA SERÁ ADICIONADA MANUALMENTE NO RENDER
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+
+  # Frontend: Roteiro Front
+  - name: roteiro-front
+    type: web
+    plan: free
+    env: docker
+    dockerfilePath: ./Front/Dockerfile
+    dockerContext: ./Front
+    envVars:
+      - key: NGINX_BACKEND_URL
+        value: http://roteiro-service:8080
+    routes:
+      - type: rewrite
+        source: /api/:path*
+        destination: http://roteiro-service:8080/api/:path*
+      - type: rewrite
+        source: /*
+        destination: /index.html

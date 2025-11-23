@@ -9,18 +9,12 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    # Proxy reverso para a URL pública, desabilitando a verificação SSL
+    # Proxy reverso simples para o backend
     location /api/ {
-        proxy_pass https://roteiro-service.onrender.com/api/;
+        # Como ambos estarão no mesmo blueprint, o Nginx encontrará o roteiro-service
+        proxy_pass http://roteiro-service:8080/api/;
 
-        # Estas duas linhas são a chave:
-        # Elas dizem ao Nginx para não se preocupar com o certificado SSL do backend,
-        # o que evita o erro "handshake failure".
-        proxy_ssl_server_name on;
-        proxy_ssl_verify off;
-
-        # Define o cabeçalho Host correto para o backend
-        proxy_set_header Host roteiro-service.onrender.com;
+        proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
