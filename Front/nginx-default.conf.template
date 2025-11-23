@@ -5,9 +5,29 @@ server {
     root /usr/share/nginx/html;
     index index.html index.htm;
 
-    # Configuração para o Angular Router (trata o erro 404 de rotas)
-    # Qualquer requisição que não for um arquivo existente, serve o index.html
     location / {
         try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        # Usa o DNS interno do Render para encontrar outros serviços.
+        resolver 10.0.0.1 valid=300s;
+        resolver_timeout 60s;
+
+        # Força o Nginx a usar o resolver em tempo de execução.
+        set $backend_url http://roteiro-service:8080;
+
+        proxy_pass $backend_url/api/;
+
+        # Aumenta os tempos de espera para lidar com serviços "dormindo".
+        proxy_connect_timeout       60s;
+        proxy_send_timeout          60s;
+        proxy_read_timeout          60s;
+        send_timeout                60s;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }

@@ -5,11 +5,11 @@ databases:
   # Banco de Dados PostgreSQL
   - name: meu-roteiro-db
     plan: free
-    databaseName: meu_roteiro_db # Nome do banco
-    user: meu_roteiro_db_user   # Nome do usuário
+    databaseName: meu_roteiro_db
+    user: meu_roteiro_db_user
 
 services:
-  # RabbitMQ como um Serviço Privado (não acessível pela internet)
+  # RabbitMQ como um Serviço Privado
   - type: pserv
     name: rabbitmq
     plan: free
@@ -30,6 +30,7 @@ services:
           property: connectionString
       - key: SPRING_RABBITMQ_HOST
         fromService:
+          type: pserv
           name: rabbitmq
           property: host
       - key: SPRING_DATASOURCE_USERNAME
@@ -55,6 +56,7 @@ services:
     envVars:
       - key: SPRING_RABBITMQ_HOST
         fromService:
+          type: pserv
           name: rabbitmq
           property: host
       - key: SPRING_MAIL_HOST
@@ -81,11 +83,4 @@ services:
     env: docker
     dockerfilePath: ./Front/Dockerfile
     dockerContext: ./Front
-    routes:
-      - type: rewrite
-        source: /api/(.*)
-        destination: http://roteiro-service:8080/api/$1
-      - type: rewrite
-        source: /*
-        destination: /index.html
     healthCheckPath: /
