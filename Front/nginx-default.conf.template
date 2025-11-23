@@ -9,10 +9,15 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    # Proxy reverso simples para o backend
     location /api/ {
-        # Como ambos estão no mesmo grupo, o Nginx encontrará o roteiro-service
-        proxy_pass http://roteiro-service:8080/api/;
+        # Esta é a configuração correta para o Render
+        # Usa o DNS interno do Render para encontrar outros serviços.
+        resolver 10.0.0.1;
+
+        # Usamos uma variável para forçar o Nginx a usar o resolver.
+        set $backend_url http://roteiro-service:8080;
+
+        proxy_pass $backend_url/api/;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
