@@ -10,15 +10,18 @@ server {
     }
 
     location /api/ {
-        # Usa o DNS interno do Render para encontrar outros serviços.
-        resolver 10.0.0.1 valid=300s;
+        # Usa o DNS interno do Render
+        resolver 10.0.0.1 valid=10s;
 
-        # Força o Nginx a usar o resolver em tempo de execução.
+        # A LINHA QUE FALTAVA: Aumenta a paciência para encontrar o serviço
+        resolver_timeout 30s;
+
+        # Força o Nginx a usar o resolver em tempo de execução
         set $backend_url http://roteiro-service:8080;
 
         proxy_pass $backend_url/api/;
 
-        # Aumenta os tempos de espera para lidar com serviços "dormindo".
+        # Mantém os timeouts da conexão altos
         proxy_connect_timeout       60s;
         proxy_send_timeout          60s;
         proxy_read_timeout          60s;
