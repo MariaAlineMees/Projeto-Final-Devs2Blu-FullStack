@@ -42,7 +42,7 @@ O objetivo é resolver um problema de organização: em vez de ter informações
 **Resposta:** A segurança foi um pilar central do projeto, garantindo que os dados de cada usuário sejam privados e seguros.
 
 -   **Autenticação:** Utiliza o **Spring Security** com `formLogin` baseado em sessão. As senhas dos usuários são criptografadas com **BCrypt** antes de serem salvas no banco de dados.
--   **Autorização:** Após o login, um usuário **só pode ver e gerenciar os seus próprios roteiros**. Toda a lógica no back-end foi alterada para sempre filtrar os dados pelo usuário autenticado na sessão.
+-   **Autorização:** Após o login, um usuário **só pode ver e gerenciar os seus próprios roteiros**. Toda a lógica no back-end foi alterada para sempre filtrar os dados pelo usuário que está logado na sessão. Assim, a "Aline" nunca conseguirá ver os roteiros do "João", e vice-versa.
 -   **Proteção de Rotas:** No front-end, as rotas são protegidas por um **AuthGuard** do Angular, que redireciona qualquer usuário não logado para a página de login.
 
 ---

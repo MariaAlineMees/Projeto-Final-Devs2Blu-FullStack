@@ -125,7 +125,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 | `POST` | `/api/login`              | Autentica um usuário e cria uma sessão.           | Pública      |
 | `POST` | `/api/logout`             | Invalida a sessão do usuário.                     | Requerida    |
 | `GET`  | `/api/auth/me`            | Obtém os dados do usuário autenticado.            | Requerida    |
-| `GET`  | `/api/roteiros`           | Lista todos os roteiros do usuário autenticado.   | Requerida    |
+| `GET`  | `/api/roteiros`           | Lista todos os roteiros **do usuário autenticado**.   | Requerida    |
 | `POST` | `/api/roteiros`           | Cria um novo roteiro para o usuário autenticado.  | Requerida    |
 | `GET`  | `/api/roteiros/{id}`      | Busca um roteiro específico por ID.               | Requerida    |
 | `PUT`  | `/api/roteiros/{id}`      | Atualiza um roteiro existente.                    | Requerida    |

@@ -1,19 +1,11 @@
 package com.roteiro.roteiro_service.repository;
 
 import com.roteiro.roteiro_service.model.Roteiro;
-import com.roteiro.roteiro_service.model.User;
+import com.roteiro.roteiro_service.model.User; // Importar User
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List; // Importar List
 
-import java.util.List;
-import java.util.Optional;
-
-@Repository
 public interface RoteiroRepository extends JpaRepository<Roteiro, Long> {
-
-
+    // ADICIONADO: Método para encontrar todos os roteiros de um usuário específico
     List<Roteiro> findByUser(User user);
-
-
-    Optional<Roteiro> findByIdAndUser(Long id, User user);
 }

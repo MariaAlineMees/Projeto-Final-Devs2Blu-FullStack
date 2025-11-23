@@ -18,20 +18,20 @@ public class RoteiroService {
     private RoteiroRepository roteiroRepository;
 
     @Autowired
-    private UserRepository userRepository; // Adicionado
+    private UserRepository userRepository;
 
     public Roteiro save(Roteiro roteiro) {
-        // Obtém o nome de usuário do contexto de segurança
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        // Busca o usuário no banco de dados
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        // Associa o usuário ao roteiro
         roteiro.setUser(user);
         return roteiroRepository.save(roteiro);
     }
 
+    // CORRIGIDO: Agora filtra os roteiros pelo usuário logado
     public List<Roteiro> findAll() {
-        return roteiroRepository.findAll();
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return roteiroRepository.findByUser(user);
     }
 
     public Roteiro findById(Long id) {
