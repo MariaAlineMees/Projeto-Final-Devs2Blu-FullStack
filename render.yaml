@@ -25,9 +25,7 @@ services:
     dockerfilePath: ./Back/roteiro-service/Dockerfile
     dockerContext: ./Back/roteiro-service
     envVars:
-      # Construindo a URL manualmente para maior robustez
-      - key: SPRING_DATASOURCE_URL
-        value: "jdbc:postgresql://${meu-roteiro-db.host}:${meu-roteiro-db.port}/${meu-roteiro-db.databaseName}"
+      # A URL do banco será adicionada manualmente após a criação
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: meu-roteiro-db
