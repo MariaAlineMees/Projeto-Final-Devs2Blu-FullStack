@@ -1,53 +1,46 @@
 services:
-  # 1. RabbitMQ
-  - type: pserv
+  # 1. RabbitMQ como um serviço privado
+  - type: private
     name: rabbitmq
-    plan: free
-    image:
-      url: rabbitmq:3-management-alpine
+    runtime: docker
+    dockerImage: rabbitmq:3-management-alpine
 
   # 2. Backend: Roteiro Service
   - type: web
     name: roteiro-service
-    plan: free
+    runtime: docker
     dockerfilePath: ./Back/roteiro-service/Dockerfile
+    healthCheck:
+      path: /actuator/health
+      initialDelaySeconds: 120 # Aumenta o tempo de espera para o Java iniciar
     envVars:
       # A URL do banco de dados será adicionada manualmente no painel do Render
       - key: SPRING_DATASOURCE_URL
         value: "COLE_A_URL_DO_BANCO_DE_DADOS_AQUI"
       - key: SPRING_RABBITMQ_HOST
         fromService:
-          type: pserv
+          type: private
           name: rabbitmq
           property: host
 
   # 3. Backend: Email Service
   - type: worker
     name: email-service
-    plan: free
+    runtime: docker
     dockerfilePath: ./Back/email-service/Dockerfile
     envVars:
       - key: SPRING_RABBITMQ_HOST
         fromService:
-          type: pserv
+          type: private
           name: rabbitmq
           property: host
 
   # 4. Frontend: Roteiro Front (com Nginx)
   - type: web
     name: roteiro-front
-    plan: free
+    runtime: docker
     dockerfilePath: ./Front/Dockerfile
-    routes:
-      - type: rewrite
-        source: /api/:path*
-        destination: /:path*
-      - type: rewrite
-        source: /*
-        destination: /index.html
     envVars:
+      # Define a URL interna para o Nginx se comunicar com o backend
       - key: NGINX_BACKEND_URL
-        fromService:
-          type: web
-          name: roteiro-service
-          property: url
+        value: http://roteiro-service:8080
