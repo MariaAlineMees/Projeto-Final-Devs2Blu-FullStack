@@ -10,11 +10,13 @@ server {
     }
 
     location /api/ {
-        # Esta é a linha mágica: diz ao Nginx para usar o DNS interno do Docker.
-        resolver 127.0.0.11;
+        # Esta é a linha que faltava.
+        # Ela diz ao Nginx para usar o DNS interno do Docker para encontrar outros serviços.
+        resolver 127.0.0.11 valid=10s;
 
         # Usamos uma variável para forçar o Nginx a usar o resolver.
         set $backend_url http://roteiro-service:8080;
+
         proxy_pass $backend_url/api/;
 
         proxy_set_header Host $host;
