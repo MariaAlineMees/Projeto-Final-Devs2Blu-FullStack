@@ -9,25 +9,18 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
+    # Proxy reverso para a URL pública, desabilitando a verificação SSL
     location /api/ {
-        # Usa o DNS interno do Render
-        resolver 10.0.0.1 valid=10s;
+        proxy_pass https://roteiro-service.onrender.com/api/;
 
-        # A LINHA QUE FALTAVA: Aumenta a paciência para encontrar o serviço
-        resolver_timeout 30s;
+        # Estas duas linhas são a chave:
+        # Elas dizem ao Nginx para não se preocupar com o certificado SSL do backend,
+        # o que evita o erro "handshake failure".
+        proxy_ssl_server_name on;
+        proxy_ssl_verify off;
 
-        # Força o Nginx a usar o resolver em tempo de execução
-        set $backend_url http://roteiro-service:8080;
-
-        proxy_pass $backend_url/api/;
-
-        # Mantém os timeouts da conexão altos
-        proxy_connect_timeout       60s;
-        proxy_send_timeout          60s;
-        proxy_read_timeout          60s;
-        send_timeout                60s;
-
-        proxy_set_header Host $host;
+        # Define o cabeçalho Host correto para o backend
+        proxy_set_header Host roteiro-service.onrender.com;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
