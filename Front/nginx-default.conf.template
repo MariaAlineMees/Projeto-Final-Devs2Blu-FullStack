@@ -10,9 +10,9 @@ server {
     }
 
     location /api/ {
-        # Esta é a linha que faltava.
-        # Ela diz ao Nginx para usar o DNS interno do Docker para encontrar outros serviços.
-        resolver 127.0.0.11 valid=10s;
+        # Esta é a configuração correta para o Render
+        # Usa o DNS interno do Render para encontrar outros serviços.
+        resolver 10.0.0.1;
 
         # Usamos uma variável para forçar o Nginx a usar o resolver.
         set $backend_url http://roteiro-service:8080;
