@@ -13,7 +13,15 @@ server {
 
     # Configuração do Proxy Reverso para TODAS as chamadas de API
     location /api/ {
-        proxy_pass https://roteiro-service.onrender.com/api/;
+        # Usa o DNS interno do Render
+        resolver 10.0.0.1;
+
+        # Define a variável para o upstream
+        set $upstream ${NGINX_BACKEND_URL};
+
+        # Passa a requisição para o backend
+        proxy_pass $upstream/api/;
+
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
