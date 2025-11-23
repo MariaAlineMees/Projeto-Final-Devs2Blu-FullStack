@@ -20,9 +20,6 @@ services:
           type: pserv
           name: rabbitmq
           property: host
-    healthCheck:
-      path: /actuator/health
-      initialDelaySeconds: 60
 
   # 3. Backend: Email Service
   - type: worker
