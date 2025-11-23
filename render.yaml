@@ -9,11 +9,11 @@ databases:
     user: meu_roteiro_db_user
 
 services:
-  # RabbitMQ como um Web Service (necessário para o plano gratuito)
+  # RabbitMQ como um Web Service
   - type: web
     name: rabbitmq
     plan: free
-    env: image # A LINHA QUE FALTAVA
+    env: image
     image:
       url: docker.io/library/rabbitmq:3-management-alpine
 
@@ -25,15 +25,9 @@ services:
     dockerfilePath: ./Back/roteiro-service/Dockerfile
     dockerContext: ./Back/roteiro-service
     envVars:
+      # Construindo a URL manualmente para maior robustez
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: meu-roteiro-db
-          property: connectionString
-      - key: SPRING_RABBITMQ_HOST
-        fromService:
-          type: web 
-          name: rabbitmq
-          property: host
+        value: "jdbc:postgresql://${meu-roteiro-db.host}:${meu-roteiro-db.port}/${meu-roteiro-db.databaseName}"
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: meu-roteiro-db
@@ -42,6 +36,11 @@ services:
         fromDatabase:
           name: meu-roteiro-db
           property: password
+      - key: SPRING_RABBITMQ_HOST
+        fromService:
+          type: web
+          name: rabbitmq
+          property: host
       - key: rabbitmq.queue.user.registered
         value: user.registered.queue
       - key: rabbitmq.queue.roteiro.criado
