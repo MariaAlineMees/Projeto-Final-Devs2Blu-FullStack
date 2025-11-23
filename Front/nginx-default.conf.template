@@ -5,18 +5,9 @@ server {
     root /usr/share/nginx/html;
     index index.html index.htm;
 
+    # Configuração para o Angular Router (trata o erro 404 de rotas)
+    # Qualquer requisição que não for um arquivo existente, serve o index.html
     location / {
         try_files $uri $uri/ /index.html;
-    }
-
-    # Proxy reverso simples para o backend
-    location /api/ {
-        # Como ambos estarão no mesmo blueprint, o Nginx encontrará o roteiro-service
-        proxy_pass http://roteiro-service:8080/api/;
-
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }

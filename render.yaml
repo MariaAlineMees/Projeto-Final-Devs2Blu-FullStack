@@ -1,34 +1,37 @@
-services:
+# Este é o Blueprint para o Render.
+# Ele descreve todos os serviços e o banco de dados da aplicação.
+
+databases:
   # Banco de Dados PostgreSQL
   - name: meu-roteiro-db
-    type: pserv
     plan: free
-    postgres:
-      version: "15"
+    databaseName: meu_roteiro_db # Nome do banco
+    user: meu_roteiro_db_user   # Nome do usuário
 
-  # RabbitMQ
-  - name: rabbitmq
-    type: pserv
+services:
+  # RabbitMQ como um Serviço Privado (não acessível pela internet)
+  - type: pserv
+    name: rabbitmq
     plan: free
     image:
       url: docker.io/library/rabbitmq:3-management-alpine
 
   # Backend: Roteiro Service
-  - name: roteiro-service
-    type: web
+  - type: web
+    name: roteiro-service
     plan: free
     env: docker
     dockerfilePath: ./Back/roteiro-service/Dockerfile
     dockerContext: ./Back/roteiro-service
     envVars:
-      - fromDatabase:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
           name: meu-roteiro-db
           property: connectionString
-        key: SPRING_DATASOURCE_URL
-      - fromService:
+      - key: SPRING_RABBITMQ_HOST
+        fromService:
           name: rabbitmq
           property: host
-        key: SPRING_RABBITMQ_HOST
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: meu-roteiro-db
@@ -43,23 +46,25 @@ services:
         value: roteiro.criado.queue
 
   # Backend: Email Service
-  - name: email-service
-    type: web
+  - type: web
+    name: email-service
     plan: free
     env: docker
     dockerfilePath: ./Back/email-service/Dockerfile
     dockerContext: ./Back/email-service
     envVars:
-      - fromService:
+      - key: SPRING_RABBITMQ_HOST
+        fromService:
           name: rabbitmq
           property: host
-        key: SPRING_RABBITMQ_HOST
       - key: SPRING_MAIL_HOST
         value: smtp.sendgrid.net
       - key: SPRING_MAIL_PORT
         value: 587
       - key: SPRING_MAIL_USERNAME
         value: apikey
+      - key: SPRING_MAIL_PASSWORD
+        sync: false # Será adicionado manualmente na interface do Render
       - key: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
         value: "true"
       - key: SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE
@@ -68,24 +73,19 @@ services:
         value: user.registered.queue
       - key: rabbitmq.queue.roteiro.criado
         value: roteiro.criado.queue
-      # A CHAVE SECRETA SERÁ ADICIONADA MANUALMENTE NO RENDER
-      - key: SPRING_MAIL_PASSWORD
-        sync: false
 
   # Frontend: Roteiro Front
-  - name: roteiro-front
-    type: web
+  - type: web
+    name: roteiro-front
     plan: free
     env: docker
     dockerfilePath: ./Front/Dockerfile
     dockerContext: ./Front
-    envVars:
-      - key: NGINX_BACKEND_URL
-        value: http://roteiro-service:8080
     routes:
       - type: rewrite
-        source: /api/:path*
-        destination: http://roteiro-service:8080/api/:path*
+        source: /api/(.*)
+        destination: http://roteiro-service:8080/api/$1
       - type: rewrite
         source: /*
         destination: /index.html
+    healthCheckPath: /
