@@ -9,17 +9,17 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
+    # Proxy reverso para a URL pública, mas desabilitando a verificação SSL
     location /api/ {
-        # Esta é a configuração correta para o Render
-        # Usa o DNS interno do Render para encontrar outros serviços.
-        resolver 10.0.0.1;
+        proxy_pass https://roteiro-service.onrender.com/api/;
 
-        # Usamos uma variável para forçar o Nginx a usar o resolver.
-        set $backend_url http://roteiro-service:8080;
+        # Estas duas linhas são a chave:
+        # Elas dizem ao Nginx para não se preocupar com o certificado SSL do backend,
+        # o que evita o erro "handshake failure".
+        proxy_ssl_server_name on;
+        proxy_ssl_verify off;
 
-        proxy_pass $backend_url/api/;
-
-        proxy_set_header Host $host;
+        proxy_set_header Host roteiro-service.onrender.com;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
