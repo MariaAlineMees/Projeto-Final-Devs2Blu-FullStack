@@ -1,36 +1,30 @@
 services:
-  # 1. Banco de Dados PostgreSQL
-  - type: pserv
-    name: meu-roteiro-db
-    plan: free
-    postgres:
-      version: "15"
-
-  # 2. RabbitMQ
+  # 1. RabbitMQ
   - type: pserv
     name: rabbitmq
     plan: free
     image:
       url: rabbitmq:3-management-alpine
 
-  # 3. Backend: Roteiro Service
+  # 2. Backend: Roteiro Service
   - type: web
     name: roteiro-service
     plan: free
     dockerfilePath: ./Back/roteiro-service/Dockerfile
     envVars:
+      # A URL do banco de dados será adicionada manualmente no painel do Render
       - key: SPRING_DATASOURCE_URL
-        fromService:
-          type: pserv
-          name: meu-roteiro-db
-          property: connectionString
+        value: "COLE_A_URL_DO_BANCO_DE_DADOS_AQUI"
       - key: SPRING_RABBITMQ_HOST
         fromService:
           type: pserv
           name: rabbitmq
           property: host
+    healthCheck:
+      path: /actuator/health
+      initialDelaySeconds: 60
 
-  # 4. Backend: Email Service
+  # 3. Backend: Email Service
   - type: worker
     name: email-service
     plan: free
@@ -42,20 +36,18 @@ services:
           name: rabbitmq
           property: host
 
-  # 5. Frontend: Roteiro Front (com Nginx)
+  # 4. Frontend: Roteiro Front (com Nginx)
   - type: web
     name: roteiro-front
     plan: free
     dockerfilePath: ./Front/Dockerfile
-    # Adiciona uma regra de reescrita para a API
     routes:
       - type: rewrite
-        source: /api/*
-        destination: /api/*
+        source: /api/:path*
+        destination: /:path*
       - type: rewrite
         source: /*
         destination: /index.html
-    # Define a variável de ambiente para o Nginx se comunicar com o backend
     envVars:
       - key: NGINX_BACKEND_URL
         fromService:
