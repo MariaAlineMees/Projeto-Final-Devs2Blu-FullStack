@@ -10,11 +10,12 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 2.  [✨ Tecnologias Utilizadas](#2--tecnologias-utilizadas)
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
-5.  [🔐 Segurança](#5--segurança)
-6.  [📬 Mensageria com RabbitMQ](#6--mensageria-com-rabbitmq)
-7.  [⚙️ API Endpoints](#7-️-api-endpoints)
-8.  [💡 Melhorias Futuras](#8--melhorias-futuras)
-9.  [👩‍💻 Desenvolvido por](#9--desenvolvido-por)
+5.  [🚨 **Instruções Importantes para o Professor/Avaliador**](#5--instruções-importantes-para-o-professoravaliador)
+6.  [🔐 Segurança](#6--segurança)
+7.  [📬 Mensageria com RabbitMQ](#7--mensageria-com-rabbitmq)
+8.  [⚙️ API Endpoints](#8-️-api-endpoints)
+9.  [💡 Melhorias Futuras](#9--melhorias-futuras)
+10. [👩‍💻 Desenvolvido por](#10--desenvolvido-por)
 
 ---
 
@@ -96,7 +97,34 @@ Após a conclusão do comando, aguarde cerca de um minuto para que todos os serv
 
 ---
 
-### 5. 🔐 Segurança
+### 5. 🚨 **Instruções Importantes para o Professor/Avaliador**
+
+Prezado Professor/Avaliador,
+
+Devido a desafios técnicos e de configuração com a plataforma de deploy Render.com, o histórico de commits deste repositório contém diversas tentativas de deploy que não foram bem-sucedidas.
+
+Para garantir que o projeto seja avaliado em sua **versão funcional e estável**, que roda perfeitamente via Docker Compose localmente, por favor, siga estas instruções:
+
+1.  **Clone o Repositório:**
+    ```sh
+    git clone https://github.com/MariaAlineMees/Projeto-Final-Devs2Blu-FullStack.git
+    cd Projeto-Final-Devs2Blu-FullStack
+    ```
+
+2.  **Mude para o Commit Funcional:**
+    A versão estável e funcional do projeto está no commit com o hash `ca93bcbe18932323d55efdb5a12027d3cc025009`. Por favor, execute o seguinte comando para ir para este ponto no histórico:
+    ```sh
+    git checkout ca93bcbe18932323d55efdb5a12027d3cc025009
+    ```
+
+3.  **Siga as Instruções de Execução Local:**
+    Após mudar para o commit correto, siga as instruções detalhadas na seção **"4. 🚀 Como Rodar o Projeto"** deste `README.md` para configurar a senha do banco de dados e iniciar a aplicação com `docker compose up --build -d`.
+
+Agradeço a compreensão e a atenção.
+
+---
+
+### 6. 🔐 Segurança
 
 A segurança foi um pilar central do projeto, garantindo que os dados de cada usuário sejam privados e seguros.
 
@@ -106,7 +134,7 @@ A segurança foi um pilar central do projeto, garantindo que os dados de cada us
 
 ---
 
-### 6. 📬 Mensageria com RabbitMQ
+### 7. 📬 Mensageria com RabbitMQ
 
 O projeto implementa dois fluxos de negócio com comunicação assíncrona:
 
@@ -115,7 +143,7 @@ O projeto implementa dois fluxos de negócio com comunicação assíncrona:
 
 ---
 
-### 7. ⚙️ API Endpoints
+### 8. ⚙️ API Endpoints
 
 A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
@@ -133,7 +161,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 8. 💡 Melhorias Futuras
+### 9. 💡 Melhorias Futuras
 
 -   **Testes Unitários e de Integração:** Expandir a cobertura de testes para garantir a robustez dos serviços.
 -   **Refinamento da Interface:** Melhorar a experiência do usuário (UX) e o design da interface (UI) no front-end.
@@ -141,7 +169,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 9. 👩‍💻 Desenvolvido por
+### 10. 👩‍💻 Desenvolvido por
 
 | Nome              | GitHub                                            |
 | :---------------- | :------------------------------------------------ |
