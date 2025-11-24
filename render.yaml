@@ -25,15 +25,12 @@ services:
     dockerfilePath: ./Back/roteiro-service/Dockerfile
     dockerContext: ./Back/roteiro-service
     envVars:
-      # A URL do banco será adicionada manualmente após a criação
-      - key: SPRING_DATASOURCE_USERNAME
+      # Fornece a URL completa do banco de dados
+      - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: meu-roteiro-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: meu-roteiro-db
-          property: password
+          property: connectionString
+      # O username e password já estão na connectionString, então não precisamos deles separados
       - key: SPRING_RABBITMQ_HOST
         fromService:
           type: web
