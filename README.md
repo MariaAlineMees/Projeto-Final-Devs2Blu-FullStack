@@ -6,7 +6,7 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 
 ## 📝 Índice
 
-1.  [Sobre o Projeto](#1-sobre-o-projeto)
+1.  [🗺️ Sobre o Projeto](#1--sobre-o-projeto)
 2.  [✨ Tecnologias Utilizadas](#2--tecnologias-utilizadas)
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
@@ -16,11 +16,11 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 8.  [📬 Mensageria com RabbitMQ](#8--mensageria-com-rabbitmq)
 9.  [⚙️ API Endpoints](#9-️-api-endpoints)
 10. [💡 Melhorias Futuras](#10--melhorias-futuras)
-11. [👩🏻‍💻 Projeto desenvolvido durante o curso +Devs2Blu! 💙](#11--projeto-desenvolvido-durante-o-curso-devs2blu-)
+11. [👩🏻‍💻 Desenvolvido por](#11--desenvolvido-por)
 
 ---
 
-### 1. Sobre o Projeto
+### 1. 🗺️ Sobre o Projeto
 
 | Item                | Detalhe                                                              |
 | :------------------ | :------------------------------------------------------------------- |
@@ -195,7 +195,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 11. 👩🏻‍💻 Projeto desenvolvido durante o curso +Devs2Blu! 💙 
+### 11. 👩🏻‍💻 Desenvolvido por
 
 | Nome              | GitHub                                            |
 | :---------------- | :------------------------------------------------ |
