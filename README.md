@@ -1,6 +1,6 @@
-# Meu Roteiro 🌍
+# ✈️ Meu Roteiro 🌍
 
-Este é o projeto final da disciplina, um sistema fullstack completo para gerenciar a criação e o processamento de roteiros de viagem pessoais. A aplicação utiliza uma arquitetura de microsserviços com Spring Boot, Angular, MySQL e RabbitMQ, totalmente containerizada com Docker.
+Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenciar a criação e o processamento de roteiros de viagem pessoais. A aplicação utiliza uma arquitetura de microsserviços com Spring Boot, Angular, MySQL e RabbitMQ, totalmente containerizada com Docker.
 
 ---
 
@@ -10,11 +10,13 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 2.  [✨ Tecnologias Utilizadas](#2--tecnologias-utilizadas)
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
-5.  [🔐 Segurança](#5--segurança)
-6.  [📬 Mensageria com RabbitMQ](#6--mensageria-com-rabbitmq)
-7.  [⚙️ API Endpoints](#7-️-api-endpoints)
-8.  [💡 Melhorias Futuras](#8--melhorias-futuras)
-9.  [👩‍💻 Desenvolvido por](#9--desenvolvido-por)
+5.  [🖼️ Telas da Aplicação](#5-️-telas-da-aplicação)
+6.  [🚨 **Instruções Importantes para o Professor/Avaliador**](#6--instruções-importantes-para-o-professoravaliador)
+7.  [🔐 Segurança](#7--segurança)
+8.  [📬 Mensageria com RabbitMQ](#8--mensageria-com-rabbitmq)
+9.  [⚙️ API Endpoints](#9-️-api-endpoints)
+10. [💡 Melhorias Futuras](#10--melhorias-futuras)
+11. [👩‍💻 Desenvolvido por](#11--desenvolvido-por)
 
 ---
 
@@ -37,6 +39,7 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 | **Segurança**    | Spring Security         | Autenticação e autorização baseada em sessão para proteger a API.      |
 | **Banco de Dados** | MySQL 8.0               | Persistência dos dados de usuários e roteiros.                         |
 | **Mensageria**   | RabbitMQ                | Comunicação assíncrona e desacoplada entre os serviços de back-end.    |
+| **IA (Sugestões)** | Spring AI + Ollama      | Microsserviço dedicado para gerar sugestões de roteiros com o modelo `phi3:mini`. |
 | **Infraestrutura** | Docker & Docker Compose | Containerização e orquestração de todos os serviços da aplicação.      |
 | **Build Backend**| Maven                   | Gerenciamento de dependências e build do projeto Java.                 |
 
@@ -44,11 +47,12 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 
 ### 3. 🏗️ Arquitetura e Fluxo de Dados
 
-O sistema é composto por 3 serviços principais, um banco de dados e um broker de mensagens:
+O sistema é composto por 4 serviços principais, um banco de dados e um broker de mensagens:
 
 -   `roteiro-front`: A aplicação Angular que o usuário acessa no navegador, servida por um **Nginx** que também atua como **Proxy Reverso**.
 -   `roteiro-service`: Microsserviço Spring Boot responsável pelo CRUD de roteiros e pela **autenticação/autorização de usuários**.
 -   `email-service`: Microsserviço Spring Boot que "ouve" eventos para **enviar e-mails de notificação**.
+-   `sugestao-service`: Microsserviço Spring Boot que se conecta ao Ollama para gerar sugestões de roteiros.
 
 ---
 
@@ -60,13 +64,15 @@ Com a aplicação totalmente containerizada, o processo para rodar todo o ambien
 
 -   Docker e Docker Compose instalados e em execução.
 -   Git (para clonar o repositório).
+-   Ollama instalado e com o modelo `phi3:mini` baixado (`ollama pull phi3:mini`).
 
-#### B. Passo 1: Configurar a Senha do Banco de Dados
+#### B. Passo 1: Configurar as Chaves de API
 
 1.  Na pasta raiz do projeto, crie um arquivo chamado `.env`.
-2.  Dentro do arquivo `.env`, adicione a seguinte linha, substituindo `sua_senha_segura` por uma senha de sua escolha:
+2.  Dentro do arquivo `.env`, adicione a seguinte linha, substituindo o valor de exemplo:
     
     ```
+    # Senha para o banco de dados MySQL
     MYSQL_ROOT_PASSWORD=sua_senha_segura
     ```
 
@@ -96,7 +102,46 @@ Após a conclusão do comando, aguarde cerca de um minuto para que todos os serv
 
 ---
 
-### 5. 🔐 Segurança
+### 5. 🖼️ Telas da Aplicação
+
+A seguir, algumas telas que demonstram a interface e a experiência do usuário.
+
+**Tela de Login e Registro**
+| Login | Registro |
+| :---: | :---: |
+| ![Tela de Login](docs/Login.png) | ![Tela de Registro](docs/Registro.png) |
+
+**Telas Principais (Após Login)**
+| Home (Boas-Vindas) | Lista de Roteiros |
+| :---: | :---: |
+| ![Tela de Home](docs/Home.png) | ![Tela de Roteiros](docs/Roteiros.png) |
+
+**Criação de Roteiro**
+![Tela de Criação de Roteiro](docs/CriarRoteiro.png)
+
+---
+
+### 6. 🚨 **Instruções Importantes**
+
+A branch `main` deste repositório contém o histórico completo de desenvolvimento, incluindo diversas tentativas de deploy na nuvem que não foram bem-sucedidas.
+
+Para avaliar a **versão 100% funcional e estável do projeto**, que roda perfeitamente em um ambiente local com Docker Compose, por favor, utilize a branch **`versao-funcional-local`**.
+
+**Instruções:**
+
+1.  **Clone o Repositório e Mude para a Branch Correta:**
+    ```sh
+    git clone https://github.com/MariaAlineMees/Projeto-Final-Devs2Blu-FullStack.git
+    cd Projeto-Final-Devs2Blu-FullStack
+    git checkout versao-funcional-local
+    ```
+
+2.  **Siga as Instruções de Execução Local:**
+    Após mudar para a branch correta, siga as instruções detalhadas na seção **"4. 🚀 Como Rodar o Projeto"** deste `README.md` para configurar as chaves de API e iniciar a aplicação com `docker compose up --build -d`.
+
+---
+
+### 7. 🔐 Segurança
 
 A segurança foi um pilar central do projeto, garantindo que os dados de cada usuário sejam privados e seguros.
 
@@ -106,16 +151,21 @@ A segurança foi um pilar central do projeto, garantindo que os dados de cada us
 
 ---
 
-### 6. 📬 Mensageria com RabbitMQ
+### 8. 📬 Mensageria com RabbitMQ
 
 O projeto implementa dois fluxos de negócio com comunicação assíncrona:
 
 1.  **E-mail de Boas-Vindas:** Ao se registrar, o `roteiro-service` publica uma mensagem na fila `user.registered.queue`, e o `email-service` a consome para enviar um e-mail de boas-vindas.
+
+    ![Diagrama do Fluxo de Cadastro de Usuário](docs/cadastroUsuarios.png)
+
 2.  **E-mail de Confirmação de Roteiro:** Ao criar um roteiro, o `roteiro-service` publica uma mensagem na fila `roteiro.criado.queue`, e o `email-service` a consome para enviar um e-mail de confirmação.
+
+    ![Diagrama do Fluxo de Criação de Roteiro](docs/criacaoRoteiro.png)
 
 ---
 
-### 7. ⚙️ API Endpoints
+### 9. ⚙️ API Endpoints
 
 A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
@@ -133,15 +183,19 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 8. 💡 Melhorias Futuras
+### 10. 💡 Melhorias Futuras
 
--   **Testes Unitários e de Integração:** Expandir a cobertura de testes para garantir a robustez dos serviços.
--   **Refinamento da Interface:** Melhorar a experiência do usuário (UX) e o design da interface (UI) no front-end.
--   **Integração com IA:** Ativar e integrar o `sugestao-service` (atualmente desativado) para permitir que os usuários recebam sugestões de roteiro geradas por IA.
+-   **Integração da IA no Frontend:** O microsserviço `sugestao-service`, que utiliza Spring AI para se comunicar com o Ollama, já está funcional e foi testado via Postman. O próximo passo é criar uma interface no Angular para que o usuário possa enviar um prompt (ex: "um roteiro de 3 dias em Paris para um casal") e receber a sugestão gerada pela IA, integrando-a à criação de roteiros.
+
+-   **Deploy em Nuvem:** O projeto está 100% funcional localmente com Docker Compose. Uma melhoria futura crucial é finalizar o processo de deploy em uma plataforma de nuvem como o Render.com. Os desafios encontrados (documentados em `DEPLOYMENT_LOG.md`) forneceram aprendizados valiosos sobre configuração de rede, variáveis de ambiente e a sintaxe de "Infraestrutura como Código" (`render.yaml`), que serão a base para uma futura tentativa de deploy bem-sucedida.
+
+-   **Testes Unitários e de Integração:** Expandir a cobertura de testes automatizados para garantir a robustez e a manutenibilidade de todos os microsserviços.
+
+-   **Refinamento da Interface:** Melhorar a experiência do usuário (UX) e o design da interface (UI) no front-end para tornar a aplicação mais intuitiva e agradável.
 
 ---
 
-### 9. 👩‍💻 Desenvolvido por
+### 11. 👩🏻‍💻 Projeto desenvolvido durante o curso +Devs2Blu! 💙 
 
 | Nome              | GitHub                                            |
 | :---------------- | :------------------------------------------------ |
