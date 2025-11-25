@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 20px); /* Altura da tela menos a toolbar */
+  min-height: calc(100vh - 20px);
   width: 100%;
 }
 

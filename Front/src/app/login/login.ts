@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core'; // 1. Importar HostBinding
+import { Component, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth';

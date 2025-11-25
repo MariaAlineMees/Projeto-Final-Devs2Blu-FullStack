@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    // --- FILA PARA USUÁRIO REGISTRADO ---
+
     @Value("${rabbitmq.queue.user.registered}")
     private String userRegisteredQueue;
 

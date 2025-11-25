@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router'; // 1. Importar RouterModule
+import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -11,7 +11,7 @@ import { MaterialModule } from './material/material-module';
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterModule, // 2. Adicionar RouterModule aqui
+    RouterModule,
     CommonModule,
     HttpClientModule,
     MaterialModule

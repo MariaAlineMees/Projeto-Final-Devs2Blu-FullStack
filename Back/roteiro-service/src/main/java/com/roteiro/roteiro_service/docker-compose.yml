@@ -3,37 +3,37 @@ version: '3.8'
 services:
   # 1. Serviço do Banco de Dados MySQL
   mysql-db:
-    image: mysql:8.0 # Imagem oficial do MySQL
+    image: mysql:8.0
     container_name: roteiros-mysql
     restart: always
     environment:
-      # As credenciais devem coincidir com o application.properties
+
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: roteiros_db
       MYSQL_USER: root
       MYSQL_PASSWORD: password
     ports:
-      # Mapeia a porta do contêiner (3306) para a porta da sua máquina (3306)
+
       - "3306:3306"
     networks:
-      - roteiros-network # Coloca o BD na rede do nosso projeto
+      - roteiros-network
 
-  # 2. Serviço do Back-end (roteiro-service)
+
   roteiro-service:
     build:
-      context: ./roteiro-service # Indica onde está o Dockerfile (pasta roteiro-service)
+      context: ./roteiro-service
       dockerfile: Dockerfile
     container_name: roteiro-api
     restart: on-failure
     ports:
-      - "8080:8080" # Mapeia a porta do contêiner (8080) para a porta da sua máquina (8080)
+      - "8080:8080"
     environment:
-      # Garante que o serviço só tente conectar ao BD após ele estar pronto
+
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/roteiros_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
     depends_on:
-      - mysql-db # Garante que o MySQL suba primeiro
+      - mysql-db
     networks:
-      - roteiros-network # Coloca o API na mesma rede do BD
+      - roteiros-network
 
 # 3. Definição da Rede
 networks:

@@ -38,21 +38,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // A conta nunca expira
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // A conta nunca é bloqueada
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // As credenciais nunca expiram
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // A conta está sempre ativa
+        return true;
     }
 }

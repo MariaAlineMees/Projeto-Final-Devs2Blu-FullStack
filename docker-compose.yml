@@ -109,7 +109,7 @@ services:
     ports:
       - "80:80" # Acessível via http://localhost
     depends_on:
-      - roteiro-service # Removida a condição de serviço saudável
+      - roteiro-service
     networks:
       - roteiros-network
 

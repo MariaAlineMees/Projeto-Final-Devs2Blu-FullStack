@@ -36,8 +36,8 @@ public class OllamaService {
         Map<String, Object> body = new HashMap<>();
         body.put("model", model);
         body.put("prompt", prompt);
-        body.put("stream", false); // Desabilitar streaming para obter a resposta completa
-        body.put("format", "json"); // Solicitar a saída em formato JSON
+        body.put("stream", false);
+        body.put("format", "json");
 
         return webClient.post()
                 .uri("/api/generate") // Usar o endpoint correto da API Ollama
@@ -45,7 +45,6 @@ public class OllamaService {
                 .retrieve()
                 .bodyToMono(Map.class)
                 .flatMap(respMap -> {
-                    // A resposta da API Ollama vem em um campo "response" como uma string JSON
                     String jsonResponse = respMap.get("response").toString();
 
                     try {
@@ -72,7 +71,7 @@ public class OllamaService {
                         return Mono.just(suggestion);
 
                     } catch (Exception e) {
-                        // Se a análise falhar, retorne a resposta bruta para depuração
+
                         SuggestionResponse fallback = new SuggestionResponse();
                         fallback.setDescription(jsonResponse);
                         return Mono.just(fallback);

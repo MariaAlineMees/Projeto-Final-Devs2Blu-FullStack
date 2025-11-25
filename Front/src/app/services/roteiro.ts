@@ -19,12 +19,12 @@ export class RoteiroService {
 
   constructor(private http: HttpClient) { }
 
-  // CORRIGIDO: Renomeado de getRoteiros para listarRoteiros para consistência
+
   listarRoteiros(): Observable<Roteiro[]> {
     return this.http.get<Roteiro[]>(this.apiUrl, { withCredentials: true });
   }
 
-  // ADICIONADO: Método que faltava para buscar um roteiro por ID
+
   buscarRoteiroPorId(id: number): Observable<Roteiro> {
     return this.http.get<Roteiro>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
@@ -33,7 +33,7 @@ export class RoteiroService {
     return this.http.post<Roteiro>(this.apiUrl, roteiro, { withCredentials: true });
   }
 
-  // CORRIGIDO: Agora aceita id e roteiro, como o novo RoteiroFormComponent espera
+
   atualizarRoteiro(id: number, roteiro: Roteiro): Observable<Roteiro> {
     return this.http.put<Roteiro>(`${this.apiUrl}/${id}`, roteiro, { withCredentials: true });
   }

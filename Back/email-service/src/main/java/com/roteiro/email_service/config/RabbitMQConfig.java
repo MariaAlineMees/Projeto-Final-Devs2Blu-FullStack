@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    // Fila para roteiro criado
     public static final String ROTEIRO_CRIADO_QUEUE = "roteiro.criado.queue";
 
     @Bean
@@ -20,7 +19,6 @@ public class RabbitMQConfig {
         return new Queue(ROTEIRO_CRIADO_QUEUE, true);
     }
 
-    // --- FILA PARA USUÁRIO REGISTRADO ---
     @Value("${rabbitmq.queue.user.registered}")
     private String userRegisteredQueue;
 
@@ -28,7 +26,6 @@ public class RabbitMQConfig {
     public Queue userRegisteredQueue() {
         return new Queue(userRegisteredQueue, true);
     }
-    // --- FIM DA NOVA FILA ---
 
     @Bean
     public MessageConverter jsonMessageConverter() {

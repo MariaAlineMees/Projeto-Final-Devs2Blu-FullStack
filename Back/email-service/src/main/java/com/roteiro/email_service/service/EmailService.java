@@ -44,7 +44,6 @@ public class EmailService {
         System.out.println("E-mail de confirmação de roteiro enviado para: " + roteiroDTO.getUserEmail());
     }
 
-    // --- MÉTODO PARA E-MAIL DE BOAS-VINDAS ---
     public void sendWelcomeEmail(UserDTO userDTO) {
         SimpleMailMessage message = new SimpleMailMessage();
 

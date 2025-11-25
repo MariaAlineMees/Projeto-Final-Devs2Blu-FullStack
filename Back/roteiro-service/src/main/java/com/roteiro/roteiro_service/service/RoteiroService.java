@@ -36,13 +36,13 @@ public class RoteiroService {
         
         Roteiro novoRoteiro = roteiroRepository.save(roteiro);
 
-        // Cria o DTO e envia a mensagem
+
         RoteiroCriadoDTO roteiroDTO = new RoteiroCriadoDTO();
         roteiroDTO.setId(novoRoteiro.getId());
         roteiroDTO.setTitulo(novoRoteiro.getTitulo());
         roteiroDTO.setDestino(novoRoteiro.getDestino());
         
-        // Os tipos já são compatíveis, nenhuma conversão necessária
+
         roteiroDTO.setDataInicio(novoRoteiro.getDataInicio());
         roteiroDTO.setDataFim(novoRoteiro.getDataFim());
         roteiroDTO.setCustoEstimado(novoRoteiro.getCustoEstimado());
@@ -55,7 +55,7 @@ public class RoteiroService {
         return novoRoteiro;
     }
 
-    // CORRIGIDO: Agora filtra os roteiros pelo usuário logado
+
     public List<Roteiro> findAll() {
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));

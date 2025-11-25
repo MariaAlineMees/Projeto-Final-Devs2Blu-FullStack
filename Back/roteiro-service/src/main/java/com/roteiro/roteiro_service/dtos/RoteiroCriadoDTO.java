@@ -12,7 +12,6 @@ public class RoteiroCriadoDTO implements Serializable {
     private String userEmail;
     private String username;
 
-    // Getters e Setters
 
     public Long getId() {
         return id;

@@ -17,11 +17,10 @@ public class AuthService {
     }
 
     public User register(User user) {
-        // Verifica se o usuário já existe
+
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Nome de usuário já existe");
         }
-
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         

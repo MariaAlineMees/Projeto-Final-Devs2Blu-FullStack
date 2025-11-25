@@ -1,6 +1,6 @@
 # Meu Roteiro 🌍
 
-Este é o projeto final do +Devs2Bl, um sistema fullstack completo para gerenciar a criação e o processamento de roteiros de viagem pessoais. A aplicação utiliza uma arquitetura de microsserviços com Spring Boot, Angular, MySQL e RabbitMQ, totalmente containerizada com Docker.
+Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenciar a criação e o processamento de roteiros de viagem pessoais. A aplicação utiliza uma arquitetura de microsserviços com Spring Boot, Angular, MySQL e RabbitMQ, totalmente containerizada com Docker.
 
 ---
 
@@ -10,12 +10,13 @@ Este é o projeto final do +Devs2Bl, um sistema fullstack completo para gerencia
 2.  [✨ Tecnologias Utilizadas](#2--tecnologias-utilizadas)
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
-5.  [🚨 **Instruções Importantes para o Professor/Avaliador**](#5--instruções-importantes-para-o-professoravaliador)
-6.  [🔐 Segurança](#6--segurança)
-7.  [📬 Mensageria com RabbitMQ](#7--mensageria-com-rabbitmq)
-8.  [⚙️ API Endpoints](#8-️-api-endpoints)
-9.  [💡 Melhorias Futuras](#9--melhorias-futuras)
-10. [👩‍💻 Desenvolvido por](#10--desenvolvido-por)
+5.  [🖼️ Telas da Aplicação](#5-️-telas-da-aplicação)
+6.  [🚨 **Instruções Importantes para o Professor/Avaliador**](#6--instruções-importantes-para-o-professoravaliador)
+7.  [🔐 Segurança](#7--segurança)
+8.  [📬 Mensageria com RabbitMQ](#8--mensageria-com-rabbitmq)
+9.  [⚙️ API Endpoints](#9-️-api-endpoints)
+10. [💡 Melhorias Futuras](#10--melhorias-futuras)
+11. [👩‍💻 Desenvolvido por](#11--desenvolvido-por)
 
 ---
 
@@ -101,7 +102,26 @@ Após a conclusão do comando, aguarde cerca de um minuto para que todos os serv
 
 ---
 
-### 5. 🚨 **Instruções Importantes para o Professor/Avaliador**
+### 5. 🖼️ Telas da Aplicação
+
+A seguir, algumas telas que demonstram a interface e a experiência do usuário.
+
+**Tela de Login e Registro**
+| Login | Registro |
+| :---: | :---: |
+| ![Tela de Login](docs/Login.png) | ![Tela de Registro](docs/Registro.png) |
+
+**Telas Principais (Após Login)**
+| Home (Boas-Vindas) | Lista de Roteiros |
+| :---: | :---: |
+| ![Tela de Home](docs/Home.png) | ![Tela de Roteiros](docs/Roteiros.png) |
+
+**Criação de Roteiro**
+![Tela de Criação de Roteiro](docs/CriarRoteiro.png)
+
+---
+
+### 6. 🚨 **Instruções Importantes para o Professor/Avaliador**
 
 Prezado Professor/Avaliador,
 
@@ -125,7 +145,7 @@ Agradeço a compreensão e a atenção.
 
 ---
 
-### 6. 🔐 Segurança
+### 7. 🔐 Segurança
 
 A segurança foi um pilar central do projeto, garantindo que os dados de cada usuário sejam privados e seguros.
 
@@ -135,16 +155,21 @@ A segurança foi um pilar central do projeto, garantindo que os dados de cada us
 
 ---
 
-### 7. 📬 Mensageria com RabbitMQ
+### 8. 📬 Mensageria com RabbitMQ
 
 O projeto implementa dois fluxos de negócio com comunicação assíncrona:
 
 1.  **E-mail de Boas-Vindas:** Ao se registrar, o `roteiro-service` publica uma mensagem na fila `user.registered.queue`, e o `email-service` a consome para enviar um e-mail de boas-vindas.
+
+    ![Diagrama do Fluxo de Cadastro de Usuário](docs/cadastroUsuarios.png)
+
 2.  **E-mail de Confirmação de Roteiro:** Ao criar um roteiro, o `roteiro-service` publica uma mensagem na fila `roteiro.criado.queue`, e o `email-service` a consome para enviar um e-mail de confirmação.
+
+    ![Diagrama do Fluxo de Criação de Roteiro](docs/criacaoRoteiro.png)
 
 ---
 
-### 8. ⚙️ API Endpoints
+### 9. ⚙️ API Endpoints
 
 A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
@@ -162,7 +187,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 9. 💡 Melhorias Futuras
+### 10. 💡 Melhorias Futuras
 
 -   **Integração da IA no Frontend:** O microsserviço `sugestao-service`, que utiliza Spring AI para se comunicar com o Ollama, já está funcional e foi testado via Postman. O próximo passo é criar uma interface no Angular para que o usuário possa enviar um prompt (ex: "um roteiro de 3 dias em Paris para um casal") e receber a sugestão gerada pela IA, integrando-a à criação de roteiros.
 
@@ -174,7 +199,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 10. 👩‍💻 Desenvolvido por
+### 11. 👩‍💻 Desenvolvido por
 
 | Nome              | GitHub                                            |
 | :---------------- | :------------------------------------------------ |
