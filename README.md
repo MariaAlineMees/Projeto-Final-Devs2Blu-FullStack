@@ -6,7 +6,7 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 
 ## 📝 Índice
 
-1.  [🗺️ Sobre o Projeto](#1-%EF%B8%8F-sobre-o-projeto)
+1.  [🗺️ Sobre o Projeto](#1--sobre-o-projeto)
 2.  [✨ Tecnologias Utilizadas](#2--tecnologias-utilizadas)
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
@@ -16,7 +16,7 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 8.  [📬 Mensageria com RabbitMQ](#8--mensageria-com-rabbitmq)
 9.  [⚙️ API Endpoints](#9-️-api-endpoints)
 10. [💡 Melhorias Futuras](#10--melhorias-futuras)
-11. [👩🏻‍💻 Desenvolvido por](#11-%E2%80%8D-desenvolvido-por)
+11. [👩🏻‍💻 Desenvolvido por](#11--desenvolvido-por)
 
 ---
 
@@ -47,18 +47,18 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 
 ### 3. 🏗️ Arquitetura e Fluxo de Dados
 
-O sistema é composto por 4 serviços principais, um banco de dados e um broker de mensagens:
+O sistema é composto por 3 serviços principais containerizados, um banco de dados e um broker de mensagens:
 
 -   `roteiro-front`: A aplicação Angular que o usuário acessa no navegador, servida por um **Nginx** que também atua como **Proxy Reverso**.
 -   `roteiro-service`: Microsserviço Spring Boot responsável pelo CRUD de roteiros e pela **autenticação/autorização de usuários**.
 -   `email-service`: Microsserviço Spring Boot que "ouve" eventos para **enviar e-mails de notificação**.
--   `sugestao-service`: Microsserviço Spring Boot que se conecta ao Ollama para gerar sugestões de roteiros.
+-   `service-sugestao`: Microsserviço Spring Boot que se conecta ao Ollama para gerar sugestões de roteiros. **(Nota: Este serviço roda localmente, fora do ambiente Docker).**
 
 ---
 
 ### 4. 🚀 Como Rodar o Projeto
 
-Com a aplicação totalmente containerizada, o processo para rodar todo o ambiente é muito simples.
+Com a aplicação totalmente containerizada, o processo para rodar o ambiente principal é muito simples.
 
 #### A. Pré-requisitos
 
@@ -76,23 +76,28 @@ Com a aplicação totalmente containerizada, o processo para rodar todo o ambien
     MYSQL_ROOT_PASSWORD=sua_senha_segura
     ```
 
-#### C. Passo 2: Iniciar a Aplicação
+#### C. Passo 2: Iniciar a Aplicação Principal (Docker)
 
 1.  Abra um terminal na pasta raiz do projeto.
-2.  Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano:
+2.  Execute o seguinte comando para iniciar os contêineres principais:
     
     ```sh
     docker compose up --build -d
     ```
-    *A flag `--build` garante que as imagens sejam (re)construídas com as últimas alterações. Na primeira vez, o processo pode demorar alguns minutos enquanto o Maven e o NPM baixam as dependências.*
+    *Isso irá iniciar o `roteiro-front`, `roteiro-service`, `email-service`, `mysql-db` e `rabbitmq`.*
 
-#### D. Passo 3: Utilizar a Aplicação
+#### D. Passo 3: Iniciar o Serviço de Sugestão (Localmente)
 
-Após a conclusão do comando, aguarde cerca de um minuto para que todos os serviços iniciem.
+Para demonstrar a funcionalidade de IA, o `service-sugestao` deve ser iniciado separadamente, através da sua IDE.
+
+1.  Garanta que o aplicativo Ollama esteja rodando na sua máquina.
+2.  Na sua IDE, abra o arquivo `Back/service-sugestao/src/main/java/com/roteiro/service_sugestao/ServiceSugestaoApplication.java`.
+3.  Execute o método `main` (clicando no ícone de "play"). O serviço iniciará na porta `8082`.
+
+#### E. Passo 4: Utilizar a Aplicação
 
 1.  **Acesse a Aplicação:** Abra seu navegador e vá para `http://localhost`.
-2.  **Crie uma Conta e Faça Login:** Use a interface para se registrar e autenticar.
-3.  **Gerencie seus Roteiros:** Agora você pode navegar entre a tela de boas-vindas, criar novos roteiros e listar os existentes usando a barra de navegação.
+2.  **Teste a IA:** Use o Postman para fazer uma requisição `POST` para `http://localhost:8082/api/roteiros/sugestao` com um corpo JSON como `{"country": "Japão"}`.
 
 | Serviço             | URL de Acesso                | Portas (Host:Container) | Credenciais (se aplicável)   |
 | :------------------ | :--------------------------- | :---------------------- | :---------------------------- |
@@ -137,7 +142,7 @@ Para avaliar a **versão 100% funcional e estável do projeto**, que roda perfei
     ```
 
 2.  **Siga as Instruções de Execução Local:**
-    Após mudar para a branch correta, siga as instruções detalhadas na seção **"4. 🚀 Como Rodar o Projeto"** deste `README.md` para configurar as chaves de API e iniciar a aplicação com `docker compose up --build -d`.
+    Após mudar para a branch correta, siga as instruções detalhadas na seção **"4. 🚀 Como Rodar o Projeto"** deste `README.md`.
 
 ---
 
@@ -185,13 +190,9 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ### 10. 💡 Melhorias Futuras
 
--   **Integração da IA no Frontend:** O microsserviço `sugestao-service`, que utiliza Spring AI para se comunicar com o Ollama, já está funcional e foi testado via Postman. O próximo passo é criar uma interface no Angular para que o usuário possa enviar um prompt (ex: "um roteiro de 3 dias em Paris para um casal") e receber a sugestão gerada pela IA, integrando-a à criação de roteiros.
-
--   **Deploy em Nuvem:** O projeto está 100% funcional localmente com Docker Compose. Uma melhoria futura crucial é finalizar o processo de deploy em uma plataforma de nuvem como o Render.com. Os desafios encontrados (documentados em `DEPLOYMENT_LOG.md`) forneceram aprendizados valiosos sobre configuração de rede, variáveis de ambiente e a sintaxe de "Infraestrutura como Código" (`render.yaml`), que serão a base para uma futura tentativa de deploy bem-sucedida.
-
--   **Testes Unitários e de Integração:** Expandir a cobertura de testes automatizados para garantir a robustez e a manutenibilidade de todos os microsserviços.
-
--   **Refinamento da Interface:** Melhorar a experiência do usuário (UX) e o design da interface (UI) no front-end para tornar a aplicação mais intuitiva e agradável.
+-   **Integração da IA no Frontend:** O microsserviço `sugestao-service` já está funcional e pode ser demonstrado rodando localmente. A integração de uma interface no frontend para consumir este serviço é uma das principais melhorias futuras planejadas.
+-   **Containerização do `sugestao-service`:** Finalizar o `Dockerfile` do `sugestao-service` para que ele possa ser orquestrado junto com os outros serviços pelo Docker Compose.
+-   **Deploy em Nuvem:** O projeto está 100% funcional localmente com Docker Compose. Uma melhoria futura crucial é finalizar o processo de deploy em uma plataforma de nuvem como o Render.com.
 
 ---
 
