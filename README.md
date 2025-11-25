@@ -11,12 +11,12 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
 5.  [🖼️ Telas da Aplicação](#5-️-telas-da-aplicação)
-6.  [🚨 **Instruções Importantes para o Professor/Avaliador**](#6--instruções-importantes-para-o-professoravaliador)
+6.  [🚨 Instruções Importantes](#6--instruções-importantes)
 7.  [🔐 Segurança](#7--segurança)
 8.  [📬 Mensageria com RabbitMQ](#8--mensageria-com-rabbitmq)
 9.  [⚙️ API Endpoints](#9-️-api-endpoints)
 10. [💡 Melhorias Futuras](#10--melhorias-futuras)
-11. [👩‍💻 Desenvolvido por](#11--desenvolvido-por)
+11. [👩🏻‍💻 Projeto desenvolvido durante o curso +Devs2Blu! 💙](#11--projeto-desenvolvido-durante-o-curso-devs2blu-)
 
 ---
 
@@ -121,7 +121,7 @@ A seguir, algumas telas que demonstram a interface e a experiência do usuário.
 
 ---
 
-### 6. 🚨 **Instruções Importantes**
+### 6. 🚨 Instruções Importantes
 
 A branch `main` deste repositório contém o histórico completo de desenvolvimento, incluindo diversas tentativas de deploy na nuvem que não foram bem-sucedidas.
 
