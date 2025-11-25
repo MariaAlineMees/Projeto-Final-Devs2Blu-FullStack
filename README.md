@@ -38,7 +38,7 @@ Este é o projeto final da disciplina, um sistema fullstack completo para gerenc
 | **Segurança**    | Spring Security         | Autenticação e autorização baseada em sessão para proteger a API.      |
 | **Banco de Dados** | MySQL 8.0               | Persistência dos dados de usuários e roteiros.                         |
 | **Mensageria**   | RabbitMQ                | Comunicação assíncrona e desacoplada entre os serviços de back-end.    |
-| **IA (Sugestões)** | Spring AI + OpenAI      | Microsserviço dedicado para gerar sugestões de roteiros com base em prompts do usuário. |
+| **IA (Sugestões)** | Spring AI + Ollama      | Microsserviço dedicado para gerar sugestões de roteiros com o modelo `phi3:mini`. |
 | **Infraestrutura** | Docker & Docker Compose | Containerização e orquestração de todos os serviços da aplicação.      |
 | **Build Backend**| Maven                   | Gerenciamento de dependências e build do projeto Java.                 |
 
@@ -51,7 +51,7 @@ O sistema é composto por 4 serviços principais, um banco de dados e um broker 
 -   `roteiro-front`: A aplicação Angular que o usuário acessa no navegador, servida por um **Nginx** que também atua como **Proxy Reverso**.
 -   `roteiro-service`: Microsserviço Spring Boot responsável pelo CRUD de roteiros e pela **autenticação/autorização de usuários**.
 -   `email-service`: Microsserviço Spring Boot que "ouve" eventos para **enviar e-mails de notificação**.
--   `sugestao-service`: Microsserviço Spring Boot que se conecta à API da OpenAI para gerar sugestões de roteiros.
+-   `sugestao-service`: Microsserviço Spring Boot que se conecta ao Ollama para gerar sugestões de roteiros.
 
 ---
 
@@ -63,18 +63,16 @@ Com a aplicação totalmente containerizada, o processo para rodar todo o ambien
 
 -   Docker e Docker Compose instalados e em execução.
 -   Git (para clonar o repositório).
+-   Ollama instalado e com o modelo `phi3:mini` baixado (`ollama pull phi3:mini`).
 
 #### B. Passo 1: Configurar as Chaves de API
 
 1.  Na pasta raiz do projeto, crie um arquivo chamado `.env`.
-2.  Dentro do arquivo `.env`, adicione as seguintes linhas, substituindo os valores de exemplo:
+2.  Dentro do arquivo `.env`, adicione a seguinte linha, substituindo o valor de exemplo:
     
     ```
     # Senha para o banco de dados MySQL
     MYSQL_ROOT_PASSWORD=sua_senha_segura
-
-    # Chave da API da OpenAI para o serviço de sugestões
-    OPENAI_API_KEY=sk-sua-chave-da-openai
     ```
 
 #### C. Passo 2: Iniciar a Aplicação
@@ -166,7 +164,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ### 9. 💡 Melhorias Futuras
 
--   **Integração da IA no Frontend:** O microsserviço `sugestao-service`, que utiliza Spring AI para se comunicar com a API da OpenAI, já está funcional e foi testado via Postman. O próximo passo é criar uma interface no Angular para que o usuário possa enviar um prompt (ex: "um roteiro de 3 dias em Paris para um casal") e receber a sugestão gerada pela IA, integrando-a à criação de roteiros.
+-   **Integração da IA no Frontend:** O microsserviço `sugestao-service`, que utiliza Spring AI para se comunicar com o Ollama, já está funcional e foi testado via Postman. O próximo passo é criar uma interface no Angular para que o usuário possa enviar um prompt (ex: "um roteiro de 3 dias em Paris para um casal") e receber a sugestão gerada pela IA, integrando-a à criação de roteiros.
 
 -   **Deploy em Nuvem:** O projeto está 100% funcional localmente com Docker Compose. Uma melhoria futura crucial é finalizar o processo de deploy em uma plataforma de nuvem como o Render.com. Os desafios encontrados (documentados em `DEPLOYMENT_LOG.md`) forneceram aprendizados valiosos sobre configuração de rede, variáveis de ambiente e a sintaxe de "Infraestrutura como Código" (`render.yaml`), que serão a base para uma futura tentativa de deploy bem-sucedida.
 
