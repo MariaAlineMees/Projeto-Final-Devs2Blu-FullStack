@@ -6,7 +6,7 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 
 ## 📝 Índice
 
-1.  [🗺️ Sobre o Projeto](#1--sobre-o-projeto)
+1.  [🗺️ Sobre o Projeto](#1-%EF%B8%8F-sobre-o-projeto)
 2.  [✨ Tecnologias Utilizadas](#2--tecnologias-utilizadas)
 3.  [🏗️ Arquitetura e Fluxo de Dados](#3-️-arquitetura-e-fluxo-de-dados)
 4.  [🚀 Como Rodar o Projeto](#4--como-rodar-o-projeto)
