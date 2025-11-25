@@ -98,6 +98,8 @@ Para demonstrar a funcionalidade de IA, o `service-sugestao` deve ser iniciado s
 
 1.  **Acesse a Aplicação:** Abra seu navegador e vá para `http://localhost`.
 2.  **Teste a IA:** Use o Postman para fazer uma requisição `POST` para `http://localhost:8082/api/roteiros/sugestao` com um corpo JSON como `{"country": "Japão"}`.
+    
+    ![Teste do Serviço de Sugestão no Postman](docs/Postman.png)
 
 | Serviço             | URL de Acesso                | Portas (Host:Container) | Credenciais (se aplicável)   |
 | :------------------ | :--------------------------- | :---------------------- | :---------------------------- |
