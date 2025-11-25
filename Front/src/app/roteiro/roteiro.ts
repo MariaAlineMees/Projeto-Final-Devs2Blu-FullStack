@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-roteiro',
   standalone: true,
   imports: [CommonModule, RoteiroListComponent, RoteiroFormComponent, RouterModule],
-  template: `<router-outlet></router-outlet>`, // Apenas carrega as rotas filhas
+  template: `<router-outlet></router-outlet>`,
   styles: []
 })
 export class RoteiroComponent {}

@@ -1,28 +1,26 @@
-/* --- MUDANÇA: Garantir que o componente preencha a tela --- */
+
 :host {
   display: flex;
-  flex-direction: column; /* Para que o conteúdo interno se organize verticalmente */
-  min-height: calc(100vh - 20px); /* 100% da altura da viewport menos a NOVA altura da toolbar (20px) */
+  flex-direction: column;
+  min-height: calc(100vh - 20px);
   width: 100%;
 }
-/* --- FIM DA MUDANÇA --- */
 
-/* ... (estilos do page-container e welcome-header mantidos) ... */
 .page-container {
-  padding-top: 1rem; /* Aumentando o espaçamento superior para 32px */
-  margin-top: 1rem; /* Garante que não haja margem superior */
-  padding-left: 2rem; /* Mantém o padding lateral */
-  padding-right: 2rem; /* Mantém o padding lateral */
-  padding-bottom: 2rem; /* Mantém o padding inferior */
+  padding-top: 1rem;
+  margin-top: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex; /* Adicionado para centralizar o conteúdo */
-  flex-direction: column; /* Adicionado para centralizar o conteúdo */
-  align-items: center; /* Adicionado para centralizar o conteúdo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .welcome-header {
-  margin-top: 0; /* Garante que não haja margem superior */
+  margin-top: 0;
   margin-bottom: 2rem;
-  text-align: center; /* Centraliza o texto do cabeçalho de boas-vindas */
+  text-align: center;
 }
 .welcome-header h1 {
   font-size: 2rem;
@@ -32,53 +30,53 @@
 }
 .welcome-header p {
   font-size: 1.2rem;
-  color: #666; /* Será sobrescrito pelo !important no styles.css se a alteração for aplicada */
+  color: #666;
   margin-top: 0.5rem;
 }
 
-/* Adicionado para forçar a cor preta */
+
 .welcome-header p.welcome-message-text {
-  color: black !important; /* Força a cor preta */
+  color: black !important;
 }
 
-/* --- MUDANÇA: Estilos para as abas --- */
+
 mat-tab-group {
-  flex-grow: 0; /* Não ocupa todo o espaço, permitindo max-width */
-  margin-top: 2rem; /* Espaçamento abaixo do welcome-header */
-  background-color: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente para as abas */
+  flex-grow: 0;
+  margin-top: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  overflow: hidden; /* Garante que o conteúdo não vaze */
-  max-width: 900px; /* --- MUDANÇA: Reduzir a largura máxima das abas --- */
-  width: 100%; /* Garante que ocupe a largura disponível até o max-width */
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
 }
 
 .tab-content-wrapper {
   padding: 1.5rem;
   display: flex;
-  justify-content: center; /* Centraliza o conteúdo dentro da aba */
-  align-items: flex-start; /* Alinha o conteúdo ao topo */
-  min-height: 400px; /* Altura mínima para o conteúdo da aba */
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 400px;
 }
 
-/* Ajustes para o container original, agora dentro da aba */
+
 .container {
   display: flex;
   gap: 2rem;
-  width: 100%; /* Ocupa toda a largura disponível na aba */
-  max-width: 1200px; /* Limita a largura máxima para melhor leitura */
-  flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas menores */
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
 }
 
 .form-container, .list-container {
   flex: 1;
-  min-width: 300px; /* Garante que os containers não fiquem muito pequenos */
-  background: none; /* Remove o background, pois a aba já tem */
-  box-shadow: none; /* Remove a sombra, pois a aba já tem */
-  padding: 0; /* Remove o padding, pois a aba já tem */
+  min-width: 300px;
+  background: none;
+  box-shadow: none;
+  padding: 0;
 }
 
-/* --- FIM DA MUDANÇA --- */
+
 
 
 h2 {
@@ -91,11 +89,11 @@ h2 {
   display: inline-block;
 }
 
-/* --- MUDANÇA: Estilos para o novo formulário --- */
+
 .roteiro-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Espaçamento entre os campos */
+  gap: 1rem;
 }
 
 .form-actions {
@@ -103,10 +101,7 @@ h2 {
   gap: 1rem;
   margin-top: 1rem;
 }
-/* --- FIM DA MUDANÇA --- */
 
-
-/* Estilos para o Grid de Cards (mantidos) */
 .roteiro-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -140,43 +135,42 @@ mat-card-content p {
   color: #6c757d;
 }
 
-/* --- MUDANÇA: Media Query para Responsividade --- */
 @media (max-width: 768px) {
   .page-container {
-    padding: 1rem; /* Reduz o padding em telas menores */
+    padding: 1rem;
   }
 
   .welcome-header h1 {
-    font-size: 1.5rem; /* Reduz o tamanho da fonte do título */
+    font-size: 1.5rem;
   }
 
   .welcome-header p {
-    font-size: 1rem; /* Reduz o tamanho da fonte do subtítulo */
+    font-size: 1rem;
   }
 
   mat-tab-group {
-    margin-top: 1rem; /* Reduz o espaçamento superior */
-    max-width: 100%; /* Ocupa toda a largura disponível */
+    margin-top: 1rem;
+    max-width: 100%;
   }
 
   .tab-content-wrapper {
-    padding: 1rem; /* Reduz o padding interno da aba */
-    flex-direction: column; /* Faz o formulário e a lista empilharem */
-    align-items: center; /* Centraliza os itens empilhados */
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
   }
 
   .container {
-    flex-direction: column; /* Faz o formulário e a lista empilharem */
-    gap: 1rem; /* Reduz o espaçamento entre eles */
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .form-container, .list-container {
-    min-width: unset; /* Remove o min-width para se ajustar melhor */
-    width: 100%; /* Ocupa toda a largura disponível */
+    min-width: unset;
+    width: 100%;
   }
 
   .roteiro-grid {
-    grid-template-columns: 1fr; /* Um card por linha em telas muito pequenas */
+    grid-template-columns: 1fr;
   }
 }
-/* --- FIM DA MUDANÇA --- */
+

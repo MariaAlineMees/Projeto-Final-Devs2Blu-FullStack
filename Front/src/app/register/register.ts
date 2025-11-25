@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core'; // 1. Importar HostBinding
+import { Component, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,8 +17,8 @@ import { MaterialModule } from '../material/material-module';
   styleUrls: ['./register.css']
 })
 export class RegisterComponent {
-  // --- MUDANÇA: Adicionar classe de fundo ao host ---
-  @HostBinding('class') class = 'background-register'; // 2. Aplicar a classe
+
+  @HostBinding('class') class = 'background-register';
 
   credentials = {
     username: '',

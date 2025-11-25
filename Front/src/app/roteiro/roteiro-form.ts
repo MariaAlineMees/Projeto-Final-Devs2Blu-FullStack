@@ -35,7 +35,7 @@ export class RoteiroFormComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log('ID da rota:', id); // DEBUG: Para ver o ID no console
+    console.log('ID da rota:', id);
 
     if (id) {
       this.isEditing = true;
@@ -43,11 +43,11 @@ export class RoteiroFormComponent implements OnInit {
 
       this.roteiroService.buscarRoteiroPorId(+id).subscribe({
         next: (roteiro) => {
-          console.log('Dados do roteiro recebidos:', roteiro); // DEBUG: Para ver os dados
+          console.log('Dados do roteiro recebidos:', roteiro);
           this.novoRoteiro = roteiro;
         },
         error: (err) => {
-          console.error('Erro ao buscar roteiro por ID:', err); // DEBUG: Para ver o erro
+          console.error('Erro ao buscar roteiro por ID:', err);
         }
       });
     }

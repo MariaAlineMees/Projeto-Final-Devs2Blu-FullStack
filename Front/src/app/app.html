@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
-  <!-- ALTERADO: Título agora é um link para a home -->
+
   <a routerLink="/home" class="home-link">
-    <span>✈️🚗 Planejador de Viagens 🚆🚢</span>
+    <span>✈️ Planejador de Viagens </span>
   </a>
   <span class="spacer"></span>
 
-  <!-- Mostra os botões se estiver logado -->
+
   <ng-container *ngIf="authService.isAuthenticated$ | async">
     <button mat-button routerLink="/roteiros/novo" aria-label="Novo Roteiro">
       <mat-icon>add</mat-icon> Novo Roteiro

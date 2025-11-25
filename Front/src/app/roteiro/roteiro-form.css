@@ -1,73 +1,73 @@
-/* Estiliza o próprio componente <app-roteiro-form> */
+
 :host {
-  /* Faz o componente se comportar como um container flexbox */
+
   display: flex;
-  /* Organiza os itens internos (o .form-container) em uma coluna */
+
   flex-direction: column;
-  /* Garante que o componente ocupe no mínimo a altura da tela menos a altura da barra de navegação (20px) */
+
   min-height: calc(100vh - 20px);
-  /* Garante que o componente ocupe toda a largura disponível */
+
   width: 100%;
-  /* Centraliza o conteúdo (o .form-container) verticalmente no meio da tela */
+
   justify-content: center;
-  /* Centraliza o conteúdo (o .form-container) horizontalmente no meio da tela */
+
   align-items: center;
 }
 
-/* Estiliza o "card" que envolve o formulário */
+
 .form-container {
-  /* Adiciona um espaçamento interno de 32px */
-  padding: 1.5rem; /* REDUZIDO: Menos espaço interno */
-  /* Faz o card ocupar 100% da largura disponível... */
+
+  padding: 1.5rem;
+
   width: 100%;
-  /* ...mas limita a largura máxima a 400px. Para diminuir mais o formulário, reduza este valor. */
+
   max-width: 400px;
-  /* Efeito de "vidro fosco" */
+
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  /* Bordas arredondadas */
+
   border-radius: 15px;
-  /* Sombra suave */
+
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-/* Estiliza o título "Novo Roteiro" ou "Editar Roteiro" */
+
 h2 {
-  /* Cor do texto */
+
   color: #333;
-  /* Remove qualquer margem superior padrão */
+
   margin-top: 0;
-  /* Adiciona uma margem inferior de 24px */
+
   margin-bottom: 1.5rem;
-  /* Deixa a fonte um pouco mais "cheia" */
+
   font-weight: 600;
-  /* Adiciona uma linha azul abaixo do título */
+
   border-bottom: 2px solid #3f51b5;
-  /* Adiciona um pequeno espaçamento entre o texto e a linha */
+
   padding-bottom: 0.5rem;
-  /* Necessário para que a borda inferior não ocupe a largura toda */
+
   display: inline-block;
 }
 
-/* Estiliza o elemento <form> em si */
+
 .roteiro-form {
-  /* Organiza os campos do formulário (mat-form-field) em uma coluna */
+
   display: flex;
   flex-direction: column;
-  /* Define o espaçamento vertical entre cada campo. Para diminuir o espaço, reduza este valor. */
-  gap: 0.2rem; /* REDUZIDO AINDA MAIS */
-  /* Garante que o formulário ocupe a largura do .form-container */
+
+  gap: 0.2rem;
+
   width: 100%;
-  /* Garante que o formulário não ultrapasse a largura máxima definida */
+
   max-width: 400px;
 }
 
-/* Estiliza a div que contém os botões "Salvar" e "Cancelar" */
+
 .form-actions {
-  /* Organiza os botões em uma linha */
+
   display: flex;
-  /* Adiciona um espaçamento entre os botões */
+
   gap: 1rem;
-  /* REMOVIDO: margin-top: 1rem; */
+
 }

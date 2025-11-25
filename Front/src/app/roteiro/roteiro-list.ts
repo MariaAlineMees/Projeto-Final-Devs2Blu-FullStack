@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from '@angular/core'; // 1. Importar HostBinding
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RoteiroService, Roteiro } from '../services/roteiro';
@@ -12,7 +12,7 @@ import { MaterialModule } from '../material/material-module';
   styleUrls: ['./roteiro-list.css']
 })
 export class RoteiroListComponent implements OnInit {
-  @HostBinding('class') class = 'background-roteiro-list'; // 2. Aplicar a classe de fundo
+  @HostBinding('class') class = 'background-roteiro-list';
 
   roteiros: Roteiro[] = [];
 

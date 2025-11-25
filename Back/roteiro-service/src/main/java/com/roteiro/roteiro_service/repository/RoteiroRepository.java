@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List; // Importar List
 
 public interface RoteiroRepository extends JpaRepository<Roteiro, Long> {
-    // ADICIONADO: Método para encontrar todos os roteiros de um usuário específico
+    // Método para encontrar todos os roteiros de um usuário específico
     List<Roteiro> findByUser(User user);
 }

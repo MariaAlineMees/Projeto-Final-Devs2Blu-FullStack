@@ -32,7 +32,7 @@ public class RoteiroController {
         return roteiroService.findAll();
     }
 
-    @GetMapping("/{id}") // ADICIONADO: Endpoint para buscar um roteiro por ID
+    @GetMapping("/{id}") // Endpoint para buscar um roteiro por ID
     public ResponseEntity<Roteiro> buscarRoteiroPorId(@PathVariable Long id) {
         try {
             Roteiro roteiro = roteiroService.findById(id);

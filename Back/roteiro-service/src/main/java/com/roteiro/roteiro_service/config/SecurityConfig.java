@@ -31,11 +31,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            // --- MUDANÇA: Adicionar tratamento de exceção para retornar 401 ---
+
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             )
-            // --- FIM DA MUDANÇA ---
+
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/**", "/api/auth/register").permitAll()
                 .anyRequest().authenticated()

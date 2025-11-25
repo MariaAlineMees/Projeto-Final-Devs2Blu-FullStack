@@ -19,7 +19,7 @@ public class SugestaoService {
         
         SuggestionRequest request = new SuggestionRequest(pais);
 
-        // Fazer a chamada HTTP POST síncrona, enviando SuggestionRequest e esperando SuggestionResponse
+
         return restTemplate.postForObject(url, request, SuggestionResponse.class);
     }
 }

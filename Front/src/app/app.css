@@ -1,10 +1,10 @@
 .home-link {
-  color: inherit; /* Herda a cor do texto da toolbar (branco) */
-  text-decoration: none; /* Remove o sublinhado do link */
+  color: inherit;
+  text-decoration: none;
   cursor: pointer;
 }
 
-/* ADICIONADO: Faz o spacer ocupar todo o espaço flexível disponível */
+
 .spacer {
   flex: 1 1 auto;
 }

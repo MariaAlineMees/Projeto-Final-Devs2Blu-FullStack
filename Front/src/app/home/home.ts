@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth';
 import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '../material/material-module'; // Importa o MaterialModule
+import { MaterialModule } from '../material/material-module';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, MaterialModule], // Adiciona MaterialModule
+  imports: [CommonModule, RouterModule, MaterialModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
   host: {

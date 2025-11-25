@@ -16,8 +16,8 @@ import { MaterialModule } from '../material/material-module';
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  // --- MUDANÇA: Adicionar classe de fundo ao host ---
-  @HostBinding('class') class = 'background-login'; // 2. Aplicar a classe
+
+  @HostBinding('class') class = 'background-login';
 
   credentials = {
     username: '',

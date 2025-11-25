@@ -22,7 +22,7 @@ public class AuthService {
             throw new IllegalArgumentException("Nome de usuário já existe");
         }
 
-        // Criptografa a senha antes de salvar
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
         return userRepository.save(user);
