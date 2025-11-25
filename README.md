@@ -1,4 +1,4 @@
-# Meu Roteiro 🌍
+# ✈️ Meu Roteiro 🌍
 
 Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenciar a criação e o processamento de roteiros de viagem pessoais. A aplicação utiliza uma arquitetura de microsserviços com Spring Boot, Angular, MySQL e RabbitMQ, totalmente containerizada com Docker.
 
