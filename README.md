@@ -114,7 +114,7 @@ A seguir, algumas telas que demonstram a interface e a experiência do usuário.
 **Telas Principais (Após Login)**
 | Home (Boas-Vindas) | Lista de Roteiros |
 | :---: | :---: |
-| ![Tela de Home](docs/Home.png) | ![Tela de Roteiros](docs/Roteiros.png) |
+| ![Tela de Home]([docs/Home.png](https://github.com/MariaAlineMees/Projeto-Final-Devs2Blu-FullStack/blob/main/Home.png)) | ![Tela de Roteiros](docs/Roteiros.png) |
 
 **Criação de Roteiro**
 ![Tela de Criação de Roteiro](docs/CriarRoteiro.png)
