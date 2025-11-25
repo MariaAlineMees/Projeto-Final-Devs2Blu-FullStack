@@ -1,4 +1,4 @@
-package com.roteiro.roteiro_service.dto;
+package com.roteiro.roteiro_service.dtos; // Pacote corrigido
 
 import java.io.Serializable;
 

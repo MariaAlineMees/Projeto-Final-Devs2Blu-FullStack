@@ -1,6 +1,6 @@
 package com.roteiro.roteiro_service.service;
 
-import com.roteiro.roteiro_service.dto.RoteiroCriadoDTO;
+import com.roteiro.roteiro_service.dtos.RoteiroCriadoDTO; // Import corrigido
 import com.roteiro.roteiro_service.model.Roteiro;
 import com.roteiro.roteiro_service.model.User;
 import com.roteiro.roteiro_service.repository.RoteiroRepository;
