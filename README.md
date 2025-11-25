@@ -121,9 +121,7 @@ A seguir, algumas telas que demonstram a interface e a experiência do usuário.
 
 ---
 
-### 6. 🚨 **Instruções Importantes para o Professor/Avaliador**
-
-Prezado Professor/Avaliador,
+### 6. 🚨 **Instruções Importantes**
 
 A branch `main` deste repositório contém o histórico completo de desenvolvimento, incluindo diversas tentativas de deploy na nuvem que não foram bem-sucedidas.
 
@@ -140,8 +138,6 @@ Para avaliar a **versão 100% funcional e estável do projeto**, que roda perfei
 
 2.  **Siga as Instruções de Execução Local:**
     Após mudar para a branch correta, siga as instruções detalhadas na seção **"4. 🚀 Como Rodar o Projeto"** deste `README.md` para configurar as chaves de API e iniciar a aplicação com `docker compose up --build -d`.
-
-Agradeço a compreensão e a atenção.
 
 ---
 
@@ -199,7 +195,7 @@ A API principal, exposta pelo `roteiro-service`, segue os padrões REST.
 
 ---
 
-### 11. 👩‍💻 Desenvolvido por
+### 11. 👩🏻‍💻 Projeto desenvolvido durante o curso +Devs2Blu! 💙 
 
 | Nome              | GitHub                                            |
 | :---------------- | :------------------------------------------------ |
