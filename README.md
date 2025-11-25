@@ -16,7 +16,7 @@ Este é o projeto final do +Devs2Blu, um sistema fullstack completo para gerenci
 8.  [📬 Mensageria com RabbitMQ](#8--mensageria-com-rabbitmq)
 9.  [⚙️ API Endpoints](#9-️-api-endpoints)
 10. [💡 Melhorias Futuras](#10--melhorias-futuras)
-11. [👩🏻‍💻 Desenvolvido por](#11--desenvolvido-por)
+11. [👩🏻‍💻 Desenvolvido por](#11-%E2%80%8D-desenvolvido-por)
 
 ---
 
